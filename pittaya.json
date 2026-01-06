@@ -1,0 +1,12 @@
+{
+  "registry": {
+    "url": "https://raw.githubusercontent.com/pittaya-ui/cli/main/registry",
+    "preferLocal": false
+  },
+  "theme": {
+    "overwriteCssVars": true
+  },
+  "install": {
+    "autoInstallDeps": true
+  }
+}
