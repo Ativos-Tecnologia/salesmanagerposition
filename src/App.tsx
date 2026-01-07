@@ -1,23 +1,15 @@
-import { HeroSection } from './components/HeroSection';
-import { ChallengeSection } from './components/ChallengeSection';
-import { PillarsSection } from './components/PillarsSection';
-import { AutonomySection } from './components/AutonomySection';
-import { DealbreakersSection } from './components/DealbreakersSection';
-import { EvaluationSection } from './components/EvaluationSection';
-import { CTASection } from './components/CTASection';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { LandingPage } from './pages/LandingPage';
+import { ApplicationPage } from './pages/ApplicationPage';
 
 function App() {
   return (
-    <>
-      <div className="paper-texture" />
-      <HeroSection />
-      <ChallengeSection />
-      <PillarsSection />
-      <AutonomySection />
-      <DealbreakersSection />
-      <EvaluationSection />
-      <CTASection />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/application" element={<ApplicationPage />} />
+      </Routes>
+    </Router>
   );
 }
 

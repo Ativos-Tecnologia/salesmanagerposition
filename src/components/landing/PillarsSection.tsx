@@ -1,5 +1,5 @@
 import { Landmark } from 'lucide-react';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
 const pillars = [
   {
@@ -49,28 +49,31 @@ export function PillarsSection() {
 
   return (
     <section className="py-24 relative bg-[#041293] text-(--cream)">
-      
       <div className="max-w-7xl mx-auto px-8  flex flex-col items-center justify-center gap-10">
-        <Landmark className='text-[#FFFFFF]'size={60} />
+        <Landmark className="text-[#FFFFFF]" size={60} />
         <div className="text-center flex flex-col items-center justify-center gap-6">
           <h2
             ref={titleRef}
-            className={`fade-in ${titleVisible ? 'visible' : ''} font-['Space_Grotesk'] text-4xl font-black text-(--cream) `}
+            className={`fade-in ${
+              titleVisible ? 'visible' : ''
+            } font-['Space_Grotesk'] text-2xl lg:text-4xl font-black text-(--cream) `}
           >
             Os 4 Pilares Desta Posição
           </h2>
-        
+
           <p
             ref={subtitleRef}
-            className={`fade-in ${subtitleVisible ? 'visible' : ''} text-[1.2rem] text-[#c8c6bd] max-w-[700px] mx-auto  leading-[1.8]`}
+            className={`fade-in ${
+              subtitleVisible ? 'visible' : ''
+            } text-lg lg:text-2xl text-[#c8c6bd] max-w-[700px] mx-auto  leading-[1.8]`}
           >
             Construção real, responsabilidade real e impacto mensurável.
           </p>
-          <div className='w-1/2 h-[2px] bg-[#ffffff4b] mx-auto'/>
+          <div className="w-1/2 h-[2px] bg-[#ffffff4b] mx-auto" />
         </div>
-      
+
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 ">
-          {pillars.map((pillar) => (
+          {pillars.map(pillar => (
             <PillarCard key={pillar.number} {...pillar} />
           ))}
         </div>

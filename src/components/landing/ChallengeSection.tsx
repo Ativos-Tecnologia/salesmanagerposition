@@ -1,4 +1,4 @@
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
 
 const challenges = [
@@ -46,23 +46,28 @@ export function ChallengeSection() {
         <div className="flex flex-col items-center justify-center gap-6 text-center">
           <h2
             ref={titleRef}
-            className={`fade-in ${titleVisible ? 'visible' : ''} font-['Space_Grotesk'] text-4xl font-black text-(--navy-deep) `}
+            className={`fade-in ${
+              titleVisible ? 'visible' : ''
+            } font-['Space_Grotesk'] text-2xl lg:text-4xl font-black text-(--navy-deep) `}
           >
             Desbrave o Novo Setor de Vendas Diretas da Ativos
           </h2>
-        
+
           <p
             ref={subtitleRef}
-            className={`fade-in ${subtitleVisible ? 'visible' : ''} text-2xl text-[#515151] max-w-5xl mx-auto  leading-[1.8]`}
+            className={`fade-in ${
+              subtitleVisible ? 'visible' : ''
+            } text-lg lg:text-2xl text-[#515151] max-w-5xl mx-auto  leading-[1.8]`}
           >
-            A Ativos se consolidou no mercado de precatórios por meio de intermediários. 
-            Agora, buscamos quem lidere a construção de Inbound & Outbound.
+            A Ativos se consolidou no mercado de precatórios por meio de
+            intermediários. Agora, buscamos quem lidere a construção de Inbound
+            & Outbound.
           </p>
-          <div className='w-1/3 h-[2px] bg-[#000000] mx-auto'/>
+          <div className="w-1/3 h-[2px] bg-[#000000] mx-auto" />
         </div>
-      
+
         <div className="grid gap-10 max-w-4xl">
-          {challenges.map((challenge) => (
+          {challenges.map(challenge => (
             <ChallengeItem key={challenge.title} {...challenge} />
           ))}
         </div>
