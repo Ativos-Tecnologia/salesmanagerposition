@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================
+// TABELA DE USUÁRIOS ADMIN
+// ============================================
+// Tabela gerenciada pelo Supabase Auth
+// Apenas administradores terão acesso ao painel
+model User {
+  id        String   @id @db.Uuid
+  email     String   @unique
+  role      String   @default("admin")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+// ============================================
+// TABELA DE APLICAÇÕES (FORMULÁRIO PÚBLICO)
+// ============================================
+// Esta tabela armazena as candidaturas enviadas através do formulário
+// Qualquer pessoa pode criar uma aplicação (sem autenticação)
+// Apenas admins podem visualizar/editar as aplicações
+model Application {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  // ============================================
+  // STEP 0: Aceitação Inicial
+  // ============================================
+  step0Accepted Boolean @map("step0_accepted")
+
+  // ============================================
+  // STEP 1: Missão e Reflexão
+  // ============================================
+  step1Accepted        Boolean @map("step1_accepted")
+  step1MissionReflection String  @map("step1_mission_reflection") @db.Text
+
+  // ============================================
+  // STEP 2: OUTCOMES (8 resultados esperados)
+  // ============================================
+  // Outcome 2.1: Playbook
+  outcome21PlaybookAccepted Boolean @map("outcome21_playbook_accepted")
+  outcome21PlaybookComment  String  @map("outcome21_playbook_comment") @db.Text
+
+  // Outcome 2.2: Reestruturação do Time
+  outcome22TeamRestructureAccepted Boolean @map("outcome22_team_restructure_accepted")
+  outcome22TeamRestructureComment  String  @map("outcome22_team_restructure_comment") @db.Text
+
+  // Outcome 2.3: Disciplina Operacional
+  outcome23OperationalDisciplineAccepted Boolean @map("outcome23_operational_discipline_accepted")
+  outcome23OperationalDisciplineComment  String  @map("outcome23_operational_discipline_comment") @db.Text
+
+  // Outcome 2.4: Time em Alta Performance
+  outcome24HighPerformanceAccepted Boolean @map("outcome24_high_performance_accepted")
+  outcome24HighPerformanceComment  String  @map("outcome24_high_performance_comment") @db.Text
+
+  // Outcome 2.4.1: Bar Raiser
+  outcome241BarRaiserAccepted Boolean @map("outcome241_bar_raiser_accepted")
+  outcome241BarRaiserComment  String  @map("outcome241_bar_raiser_comment") @db.Text
+
+  // Outcome 2.4.2: Accountability
+  outcome242AccountabilityAccepted Boolean @map("outcome242_accountability_accepted")
+  outcome242AccountabilityComment  String  @map("outcome242_accountability_comment") @db.Text
+
+  // Outcome 2.6: Conversão
+  outcome26ConversionAccepted Boolean @map("outcome26_conversion_accepted")
+  outcome26ConversionComment  String  @map("outcome26_conversion_comment") @db.Text
+
+  // Outcome 2.7: IA e Eficiência
+  outcome27AiAccepted Boolean @map("outcome27_ai_accepted")
+  outcome27AiComment  String  @map("outcome27_ai_comment") @db.Text
+
+  // ============================================
+  // STEP 3: COMPETÊNCIAS (8 competências)
+  // ============================================
+  // Armazenado como JSONB array
+  // Estrutura: [{name: string, rating: string, example: string}]
+  // Exemplo: [
+  //   {name: "comp31", rating: "5", example: "Descrição..."},
+  //   {name: "comp32", rating: "4", example: "Descrição..."},
+  //   ...
+  // ]
+  competencies Json @db.JsonB
+
+  // ============================================
+  // STEP 4: Informações Pessoais e Finais
+  // ============================================
+  // Informações Pessoais
+  fullName  String @map("full_name")
+  cpf       String
+  birthDate String @map("birth_date")
+  city      String
+  state     String
+
+  // Contato
+  email    String
+  whatsapp String
+
+  // Expectativa Salarial e Notas Finais
+  salaryExpectation String  @map("salary_expectation")
+  finalNotes        String  @map("final_notes") @db.Text
+
+  // Documentos/Arquivos (URLs ou nomes dos arquivos)
+  // Array de strings com os caminhos/URLs dos arquivos enviados
+  documents String[] @default([])
+
+  // Foto da pessoa (caminho do arquivo no storage)
+  photoUrl String? @map("photo_url")
+
+  // Redes sociais (array de objetos com name e url)
+  // Estrutura: [{name: "LinkedIn", url: "https://..."}, {name: "GitHub", url: "https://..."}]
+  socialMedia Json? @map("social_media") @db.JsonB
+
+  // ============================================
+  // METADADOS
+  // ============================================
+  // Status da aplicação (para futura gestão)
+  status String @default("pending") // pending, reviewing, approved, rejected
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Índices para melhor performance
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+  @@map("applications")
+}
+

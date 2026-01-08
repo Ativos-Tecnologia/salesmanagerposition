@@ -11,6 +11,11 @@ export interface ContactInfo {
   whatsapp: string;
 }
 
+export interface SocialMedia {
+  name: string;
+  url: string;
+}
+
 export interface OutcomeResponse {
   accepted: boolean;
   comment: string;
@@ -48,9 +53,11 @@ export interface ApplicationFormData {
   step4: {
     personalInfo: PersonalInfo;
     contact: ContactInfo;
+    socialMedia: SocialMedia[];
     salaryExpectation: string;
     finalNotes: string;
     files: File[];
+    photo: File | null;
   };
   currentStep: number;
 }
