@@ -83,23 +83,42 @@ export function Step3({ competencies, onCompetencyChange, onNext, onBack, showMo
   };
 
   const handleNext = () => {
-    const allRated = competencyDefinitions.every((def) => {
+    const unratedComp = competencyDefinitions.find(def => {
       const comp = getCompetency(def.name);
-      return comp.rating !== '';
+      return comp.rating === '';
     });
 
-    if (!allRated) {
-      showModal('Por favor, avalie todas as competências.', 'Atenção', 'warning');
+    if (unratedComp) {
+      showModal(
+        `Por favor, selecione uma autoavaliação (de 1 a 5) para a competência "${unratedComp.title}" antes de continuar.`,
+        'Campo obrigatório não preenchido',
+        'warning'
+      );
+      setTimeout(() => {
+        document
+          .getElementById(`rating-${unratedComp.title}`)
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
 
-    const allExamplesValid = competencyDefinitions.every((def) => {
+    const invalidExample = competencyDefinitions.find(def => {
       const comp = getCompetency(def.name);
-      return comp.example.length >= 200;
+      return comp.example.length < 200;
     });
 
-    if (!allExamplesValid) {
-      showModal('Por favor, forneça exemplos de pelo menos 200 caracteres para todas as competências.', 'Atenção', 'warning');
+    if (invalidExample) {
+      const comp = getCompetency(invalidExample.name);
+      showModal(
+        `Campo de exemplo da competência "${invalidExample.title}": sua resposta tem ${comp.example.length} caracteres. São necessários pelo menos 200 caracteres.`,
+        'Campo obrigatório incompleto',
+        'warning'
+      );
+      setTimeout(() => {
+        document
+          .getElementById(`example-${invalidExample.title}`)
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
 

@@ -23,11 +23,29 @@ export function Step1({
 }: Step1Props) {
   const handleNext = () => {
     if (!accepted) {
-      showModal('Por favor, confirme que compreendeu a missão.', 'Atenção', 'warning');
+      showModal(
+        'Por favor, marque a caixa "Li e compreendi a missão e o nível de responsabilidade da função" antes de continuar.',
+        'Campo obrigatório não preenchido',
+        'warning'
+      );
+      setTimeout(() => {
+        document
+          .getElementById('check1')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
     if (missionReflection.length < 300) {
-      showModal('Por favor, forneça uma reflexão de pelo menos 300 caracteres.', 'Atenção', 'warning');
+      showModal(
+        `Campo "O que, especificamente, neste desafio faz sentido para você?": sua reflexão tem ${missionReflection.length} caracteres. São necessários pelo menos 300 caracteres.`,
+        'Campo obrigatório incompleto',
+        'warning'
+      );
+      setTimeout(() => {
+        document
+          .getElementById('mission-text')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
     onNext();

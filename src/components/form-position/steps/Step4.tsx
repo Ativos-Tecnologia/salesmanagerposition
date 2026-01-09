@@ -162,77 +162,129 @@ export function Step4({
 
     if (!validateFullName(data.personalInfo.fullName)) {
       showModal(
-        'Por favor, informe seu nome completo (nome e sobrenome).',
-        'Atenção',
+        'Campo "Nome Completo" na seção "Informações Pessoais": por favor, informe seu nome completo (nome e sobrenome).',
+        'Campo obrigatório não preenchido',
         'warning'
       );
       newErrors.fullName = true;
       setErrors(newErrors);
+      setTimeout(() => {
+        document
+          .getElementById('full-name')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
 
     if (!validateCPF(data.personalInfo.cpf)) {
       showModal(
-        'Por favor, informe um CPF válido (11 dígitos).',
-        'Atenção',
+        'Campo "CPF" na seção "Informações Pessoais": por favor, informe um CPF válido com 11 dígitos (apenas números).',
+        'Campo obrigatório inválido',
         'warning'
       );
       newErrors.cpf = true;
       setErrors(newErrors);
+      setTimeout(() => {
+        document
+          .getElementById('cpf')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
 
     if (!validateDate(data.personalInfo.birthDate)) {
       showModal(
-        'Por favor, informe uma data de nascimento válida (DD/MM/AAAA).',
-        'Atenção',
+        'Campo "Data de Nascimento" na seção "Informações Pessoais": por favor, informe uma data válida no formato DD/MM/AAAA.',
+        'Campo obrigatório inválido',
         'warning'
       );
       newErrors.birthDate = true;
       setErrors(newErrors);
+      setTimeout(() => {
+        document
+          .getElementById('birth-date')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
 
     if (!data.personalInfo.city.trim()) {
-      showModal('Por favor, informe sua cidade.', 'Atenção', 'warning');
+      showModal(
+        'Campo "Cidade" na seção "Informações Pessoais": por favor, informe sua cidade.',
+        'Campo obrigatório não preenchido',
+        'warning'
+      );
       newErrors.city = true;
       setErrors(newErrors);
+      setTimeout(() => {
+        document
+          .getElementById('city')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
 
     if (!data.personalInfo.state) {
-      showModal('Por favor, selecione seu estado.', 'Atenção', 'warning');
+      showModal(
+        'Campo "Estado" na seção "Informações Pessoais": por favor, selecione seu estado.',
+        'Campo obrigatório não preenchido',
+        'warning'
+      );
       newErrors.state = true;
       setErrors(newErrors);
+      setTimeout(() => {
+        document
+          .getElementById('state')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
 
     if (!validateEmail(data.contact.email)) {
-      showModal('Por favor, informe um e-mail válido.', 'Atenção', 'warning');
+      showModal(
+        'Campo "E-mail" na seção "Contato": por favor, informe um e-mail válido.',
+        'Campo obrigatório inválido',
+        'warning'
+      );
       newErrors.email = true;
       setErrors(newErrors);
+      setTimeout(() => {
+        document
+          .getElementById('email')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
 
     if (!validateWhatsApp(data.contact.whatsapp)) {
       showModal(
-        'Por favor, informe um WhatsApp válido com DDD (10 ou 11 dígitos).',
-        'Atenção',
+        'Campo "WhatsApp" na seção "Contato": por favor, informe um número válido com DDD (10 ou 11 dígitos).',
+        'Campo obrigatório inválido',
         'warning'
       );
       newErrors.whatsapp = true;
       setErrors(newErrors);
+      setTimeout(() => {
+        document
+          .getElementById('whatsapp')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
 
     if (!validateSalary(data.salaryExpectation)) {
       showModal(
-        'Por favor, informe sua pretensão salarial.',
-        'Atenção',
+        'Campo "Pretensão Salarial" na seção "Informações Profissionais": por favor, informe sua pretensão salarial.',
+        'Campo obrigatório não preenchido',
         'warning'
       );
       newErrors.salaryExpectation = true;
       setErrors(newErrors);
+      setTimeout(() => {
+        document
+          .getElementById('salary-expectation')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
 

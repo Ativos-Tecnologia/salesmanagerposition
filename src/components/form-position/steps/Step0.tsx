@@ -11,7 +11,16 @@ interface Step0Props {
 export function Step0({ accepted, onAcceptedChange, onNext, showModal }: Step0Props) {
   const handleNext = () => {
     if (!accepted) {
-      showModal('Por favor, marque a caixa para confirmar que você leu e entendeu.', 'Atenção', 'warning');
+      showModal(
+        'Por favor, marque a caixa de confirmação no final da página para confirmar que você leu e entendeu o contexto geral da vaga.',
+        'Campo obrigatório não preenchido',
+        'warning'
+      );
+      setTimeout(() => {
+        document
+          .getElementById('check0')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
     onNext();
