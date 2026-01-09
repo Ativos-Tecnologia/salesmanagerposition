@@ -25,7 +25,7 @@ export function validateEmail(email: string): boolean {
 
 export function validateWhatsApp(whatsapp: string): boolean {
   const numbers = whatsapp.replace(/\D/g, '');
-  return numbers.length >= 10;
+  return numbers.length === 11 || numbers.length === 10;
 }
 
 export function validateFullName(name: string): boolean {

@@ -216,7 +216,7 @@ export function Step4({
 
     if (!validateWhatsApp(data.contact.whatsapp)) {
       showModal(
-        'Por favor, informe um WhatsApp válido com DDD.',
+        'Por favor, informe um WhatsApp válido com DDD (10 ou 11 dígitos).',
         'Atenção',
         'warning'
       );
@@ -252,10 +252,11 @@ export function Step4({
       </div>
 
       <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
-        <h3 className="text-2xl font-bold text-[#0a0e27] mb-4">Foto Pessoal</h3>
+        <h3 className="text-2xl font-bold text-[#0a0e27] mb-4">
+          Foto Pessoal (Opcional)
+        </h3>
         <p className="mb-4 text-[#0a0e27]">
           Adicione uma foto sua para o perfil (formato: JPG, PNG | máx: 5MB)
-          (Não é obrigatório).
         </p>
 
         {!data.photo && !photoPreview ? (
