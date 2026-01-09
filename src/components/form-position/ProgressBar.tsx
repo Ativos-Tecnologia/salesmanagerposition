@@ -11,7 +11,7 @@ export function ProgressBar({ currentStep, totalSteps }: ProgressBarProps) {
     <div className="sticky top-0 z-50 bg-[#fafbfc] py-5 mb-10 border-b border-[#e0e7ef]">
       <div className="w-full h-2 bg-[#e0e7ef] rounded overflow-hidden">
         <div
-          className="h-full bg-linear-to-r from-[#00c853] to-[#00e676] transition-all duration-500 ease-in-out"
+          className="h-full bg-linear-to-r from-[#2563eb] to-[#3b82f6] transition-all duration-500 ease-in-out"
           style={{ width: `${progress}%` }}
         />
       </div>

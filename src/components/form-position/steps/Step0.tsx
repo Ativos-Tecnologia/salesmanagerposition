@@ -20,13 +20,13 @@ export function Step0({ accepted, onAcceptedChange, onNext, showModal }: Step0Pr
   return (
     <div className="opacity-0 animate-[fadeInUp_0.5s_ease_forwards]">
       <div className="mb-8 pb-6 border-b-2 border-[#0a0e27]">
-        <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#00e676] mb-2 uppercase">
+        <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#3b82f6] mb-2 uppercase">
           Etapa Inicial
         </div>
         <h2 className="text-4xl font-bold text-[#0a0e27] mb-2">Contexto Geral da Vaga</h2>
       </div>
 
-      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#00e676] rounded-r">
+      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <h3 className="text-2xl font-bold text-[#0a0e27] mb-4">
           Leia com atenção antes de começar o preenchimento
         </h3>
@@ -36,16 +36,16 @@ export function Step0({ accepted, onAcceptedChange, onNext, showModal }: Step0Pr
           deixamos claro:
         </p>
         <ul className="list-none my-4">
-          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#00e676] before:font-bold">
+          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
             qual é a missão da função
           </li>
-          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#00e676] before:font-bold">
+          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
             quais resultados são esperados
           </li>
-          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#00e676] before:font-bold">
+          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
             como o desempenho será avaliado
           </li>
-          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#00e676] before:font-bold">
+          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
             quais comportamentos são inegociáveis
           </li>
         </ul>

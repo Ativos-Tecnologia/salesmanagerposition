@@ -27,7 +27,7 @@ export function OutcomeBlock({
   onCommentChange,
 }: OutcomeBlockProps) {
   return (
-    <div className="mb-10 p-8 bg-white border-2 border-[#e0e7ef] rounded transition-all hover:border-[#00e676] hover:shadow-[0_4px_20px_rgba(0,230,118,0.1)]">
+    <div className="mb-10 p-8 bg-white border-2 border-[#e0e7ef] rounded transition-all hover:border-[#3b82f6] hover:shadow-[0_4px_20px_rgba(59,130,246,0.1)]">
       <div className="text-base text-[#546e7a] font-semibold mb-4 uppercase tracking-wider">
         {subtitle}
       </div>
@@ -35,7 +35,7 @@ export function OutcomeBlock({
       <div className="mb-4">{description}</div>
       
       {criteria && (
-        <div className="bg-[#f1f8f4] p-5 my-5 border-l-4 border-[#00e676]">
+        <div className="bg-[#eff6ff] p-5 my-5 border-l-4 border-[#3b82f6]">
           <div className="font-bold text-[#0a0e27] mb-3 text-base uppercase tracking-wider">
             Critério de Sucesso
           </div>

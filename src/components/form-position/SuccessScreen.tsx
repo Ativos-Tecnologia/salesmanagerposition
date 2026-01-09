@@ -5,7 +5,7 @@ export function SuccessScreen() {
     <div className="text-center  px-6 opacity-0 animate-[fadeInUp_0.8s_ease_forwards]">
       {/* Ícone de Sucesso com animação */}
       <div className="relative inline-block mb-8">
-        <div className="relative text-[80px] text-[#00e676] animate-[fadeInUp_0.5s_ease_forwards]">
+        <div className="relative text-[80px] text-[#3b82f6] animate-[fadeInUp_0.5s_ease_forwards]">
           ✓
         </div>
       </div>
@@ -16,7 +16,7 @@ export function SuccessScreen() {
       </h2>
 
       {/* Linha decorativa */}
-      <div className="w-24 h-1 bg-[#00e676] mx-auto mb-6"></div>
+      <div className="w-24 h-1 bg-[#3b82f6] mx-auto mb-6"></div>
 
       {/* Mensagem principal */}
       <p className="text-xl text-[#546e7a] max-w-[600px] mx-auto mb-8 leading-relaxed font-['Space_Grotesk']">

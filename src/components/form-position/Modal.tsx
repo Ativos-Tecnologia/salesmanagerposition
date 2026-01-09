@@ -52,7 +52,7 @@ export function Modal({ isOpen, title, message, type, onClose }: ModalProps) {
       case 'error':
         return 'text-red-600';
       case 'success':
-        return 'text-[#00e676]';
+        return 'text-[#3b82f6]';
       case 'warning':
         return 'text-[#ffd600]';
       default:
@@ -65,7 +65,7 @@ export function Modal({ isOpen, title, message, type, onClose }: ModalProps) {
       case 'error':
         return 'border-red-600';
       case 'success':
-        return 'border-[#00e676]';
+        return 'border-[#3b82f6]';
       case 'warning':
         return 'border-[#ffd600]';
       default:
@@ -104,7 +104,7 @@ export function Modal({ isOpen, title, message, type, onClose }: ModalProps) {
         <div className="p-6 border-t border-[#e0e7ef] flex justify-end">
           <button
             onClick={onClose}
-            className="px-8 py-3 bg-[#00e676] text-[#0a0e27] rounded font-['Space_Grotesk'] text-sm font-semibold tracking-wider uppercase transition-all hover:bg-[#00c853] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,230,118,0.3)]"
+            className="px-8 py-3 bg-[#3b82f6] text-white rounded font-['Space_Grotesk'] text-sm font-semibold tracking-wider uppercase transition-all hover:bg-[#2563eb] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(59,130,246,0.3)]"
           >
             Entendi
           </button>

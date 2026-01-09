@@ -35,9 +35,10 @@ export function CTASection() {
 
         <Link
           to="/application"
-          className="inline-block rounded-2xl px-14 py-5 bg-[#59FF99] text-[#04082D] font-['Space_Grotesk'] text-xs lg:text-2xl font-bold tracking-[2px] uppercase no-underline border-[3px] border-[#B1F9DA] cursor-pointer transition-all duration-400 relative shadow-[0_8px_20px_rgba(89,255,153,0.4)] mt-8 hover:bg-[#B1F9DA] hover:-translate-y-[3px] hover:shadow-[0_12px_30px_rgba(89,255,153,0.6)]"
+          className="inline-block max-w-4xl rounded-2xl px-14 py-5 bg-[#59FF99] text-[#04082D] font-['Space_Grotesk'] text-xs lg:text-2xl font-bold tracking-[2px] uppercase no-underline border-[3px] border-[#B1F9DA] cursor-pointer transition-all duration-400 relative shadow-[0_8px_20px_rgba(89,255,153,0.4)] mt-8 hover:bg-[#B1F9DA] hover:-translate-y-[3px] hover:shadow-[0_12px_30px_rgba(89,255,153,0.6)]"
         >
-          Entender Missão, Resultados Esperados e Competências do Cargo
+          Clique aqui para Entender a Missão, Resultados Esperados e
+          Competências do Cargo
         </Link>
       </div>
     </section>

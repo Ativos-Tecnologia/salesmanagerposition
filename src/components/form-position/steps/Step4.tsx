@@ -243,7 +243,7 @@ export function Step4({
   return (
     <div className="opacity-0 animate-[fadeInUp_0.5s_ease_forwards]">
       <div className="mb-8 pb-6 border-b-2 border-[#0a0e27]">
-        <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#00e676] mb-2 uppercase">
+        <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#3b82f6] mb-2 uppercase">
           Etapa Final
         </div>
         <h2 className="text-4xl font-bold text-[#0a0e27] mb-2">
@@ -251,7 +251,7 @@ export function Step4({
         </h2>
       </div>
 
-      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#00e676] rounded-r">
+      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <h3 className="text-2xl font-bold text-[#0a0e27] mb-4">Foto Pessoal</h3>
         <p className="mb-4 text-[#0a0e27]">
           Adicione uma foto sua para o perfil (formato: JPG, PNG | máx: 5MB)
@@ -260,10 +260,10 @@ export function Step4({
 
         {!data.photo && !photoPreview ? (
           <div
-            className="border-2 border-dashed border-[#e0e7ef] rounded p-8 text-center bg-white transition-all cursor-pointer hover:border-[#00e676] hover:bg-[#f8fdf9]"
+            className="border-2 border-dashed border-[#e0e7ef] rounded p-8 text-center bg-white transition-all cursor-pointer hover:border-[#3b82f6] hover:bg-[#eff6ff]"
             onClick={() => document.getElementById('photoInput')?.click()}
           >
-            <div className="text-5xl mb-4 text-[#00e676]">📷</div>
+            <div className="text-5xl mb-4 text-[#3b82f6]">📷</div>
             <p className="font-semibold mb-2 text-[#0a0e27]">
               Clique para adicionar sua foto
             </p>
@@ -277,12 +277,12 @@ export function Step4({
             />
           </div>
         ) : (
-          <div className="flex items-center gap-4 p-4 bg-[#f1f8f4] rounded border border-[#00e676]/30">
+          <div className="flex items-center gap-4 p-4 bg-[#eff6ff] rounded border border-[#3b82f6]/30">
             {photoPreview && (
               <img
                 src={photoPreview}
                 alt="Preview"
-                className="h-24 w-24 rounded-lg object-cover border-2 border-[#00e676]"
+                className="h-24 w-24 rounded-lg object-cover border-2 border-[#3b82f6]"
               />
             )}
             <div className="flex-1">
@@ -304,7 +304,7 @@ export function Step4({
         )}
       </div>
 
-      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#00e676] rounded-r">
+      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <h3 className="text-2xl font-bold text-[#0a0e27] mb-4">
           Materiais de Suporte (Opcional)
         </h3>
@@ -315,10 +315,10 @@ export function Step4({
       </div>
 
       <div
-        className="border-2 border-dashed border-[#e0e7ef] rounded p-12 text-center bg-white transition-all cursor-pointer my-8 hover:border-[#00e676] hover:bg-[#f8fdf9]"
+        className="border-2 border-dashed border-[#e0e7ef] rounded p-12 text-center bg-white transition-all cursor-pointer my-8 hover:border-[#3b82f6] hover:bg-[#eff6ff]"
         onClick={() => document.getElementById('fileInput')?.click()}
       >
-        <div className="text-5xl mb-4 text-[#00e676]">📎</div>
+        <div className="text-5xl mb-4 text-[#3b82f6]">📎</div>
         <p className="font-semibold mb-2 text-[#0a0e27]">
           Clique para fazer upload de arquivos
         </p>
@@ -344,7 +344,7 @@ export function Step4({
           {uploadedFiles.map(file => (
             <div
               key={file.name}
-              className="flex items-center justify-between p-3 bg-[#f1f8f4] rounded mb-2"
+              className="flex items-center justify-between p-3 bg-[#eff6ff] rounded mb-2"
             >
               <span className="font-['Space_Grotesk'] text-sm text-[#0a0e27]">
                 {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
@@ -361,7 +361,7 @@ export function Step4({
         </div>
       )}
 
-      <div className="mt-12 mb-8 p-6 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#00e676] rounded-r">
+      <div className="mt-12 mb-8 p-6 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <h3 className="text-[22px] font-bold text-[#0a0e27] mb-5">
           Dados Pessoais
         </h3>
@@ -430,7 +430,7 @@ export function Step4({
               htmlFor="state"
               className="block font-semibold mb-3 text-[#0a0e27] text-lg"
             >
-              <span className="text-[#00e676] font-bold">* </span>
+              <span className="text-[#3b82f6] font-bold">* </span>
               Estado
             </label>
             <select
@@ -443,7 +443,7 @@ export function Step4({
               }
               className={`w-full p-4 border-2 ${
                 errors.state ? 'border-red-600' : 'border-[#e0e7ef]'
-              } rounded font-['Space_Grotesk'] text-[17px] text-[#0a0e27] transition-all bg-white focus:outline-none focus:border-[#00e676] cursor-pointer`}
+              } rounded font-['Space_Grotesk'] text-[17px] text-[#0a0e27] transition-all bg-white focus:outline-none focus:border-[#3b82f6] cursor-pointer`}
             >
               <option value="">UF</option>
               {estados.map(estado => (
@@ -456,7 +456,7 @@ export function Step4({
         </div>
       </div>
 
-      <div className="mb-8 p-6 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#00e676] rounded-r">
+      <div className="mb-8 p-6 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <h3 className="text-[22px] font-bold text-[#0a0e27] mb-5">
           Dados de Contato
         </h3>
@@ -489,7 +489,7 @@ export function Step4({
         />
       </div>
 
-      <div className="mb-8 p-6 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#00e676] rounded-r">
+      <div className="mb-8 p-6 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <div className="flex justify-between items-center mb-5">
           <h3 className="text-[22px] font-bold text-[#0a0e27]">
             Redes Sociais (Opcional)
@@ -497,7 +497,7 @@ export function Step4({
           <button
             type="button"
             onClick={handleAddSocialMedia}
-            className="flex items-center gap-2 px-4 py-2 bg-[#00e676] text-white rounded font-semibold transition-all hover:bg-[#00c766] hover:shadow-lg"
+            className="flex items-center gap-2 px-4 py-2 bg-[#3b82f6] text-white rounded font-semibold transition-all hover:bg-[#2563eb] hover:shadow-lg"
           >
             <span className="text-xl">+</span>
             Adicionar Rede
@@ -506,12 +506,16 @@ export function Step4({
 
         {socialMedia.length === 0 ? (
           <p className="text-[#78909c] text-center py-4">
-            Nenhuma rede social adicionada. Clique em "+ Adicionar Rede" para incluir suas redes sociais.
+            Nenhuma rede social adicionada. Clique em "+ Adicionar Rede" para
+            incluir suas redes sociais.
           </p>
         ) : (
           <div className="space-y-4">
             {socialMedia.map((social, index) => (
-              <div key={index} className="flex gap-3 items-start p-4 bg-white rounded border border-[#e0e7ef]">
+              <div
+                key={index}
+                className="flex gap-3 items-start p-4 bg-white rounded border border-[#e0e7ef]"
+              >
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-sm font-semibold mb-2 text-[#0a0e27]">
@@ -520,9 +524,11 @@ export function Step4({
                     <input
                       type="text"
                       value={social.name}
-                      onChange={(e) => handleSocialMediaChange(index, 'name', e.target.value)}
-                      placeholder="Ex: LinkedIn, GitHub, Instagram..."
-                      className="w-full p-3 border-2 border-[#e0e7ef] rounded font-['Space_Grotesk'] text-[15px] text-[#0a0e27] transition-all bg-white focus:outline-none focus:border-[#00e676]"
+                      onChange={e =>
+                        handleSocialMediaChange(index, 'name', e.target.value)
+                      }
+                      placeholder="Ex: LinkedIn, Youtube, Instagram..."
+                      className="w-full p-3 border-2 border-[#e0e7ef] rounded font-['Space_Grotesk'] text-[15px] text-[#0a0e27] transition-all bg-white focus:outline-none focus:border-[#3b82f6]"
                     />
                   </div>
                   <div>
@@ -532,9 +538,11 @@ export function Step4({
                     <input
                       type="url"
                       value={social.url}
-                      onChange={(e) => handleSocialMediaChange(index, 'url', e.target.value)}
+                      onChange={e =>
+                        handleSocialMediaChange(index, 'url', e.target.value)
+                      }
                       placeholder="https://..."
-                      className="w-full p-3 border-2 border-[#e0e7ef] rounded font-['Space_Grotesk'] text-[15px] text-[#0a0e27] transition-all bg-white focus:outline-none focus:border-[#00e676]"
+                      className="w-full p-3 border-2 border-[#e0e7ef] rounded font-['Space_Grotesk'] text-[15px] text-[#0a0e27] transition-all bg-white focus:outline-none focus:border-[#3b82f6]"
                     />
                   </div>
                 </div>

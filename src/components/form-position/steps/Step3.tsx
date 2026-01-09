@@ -109,7 +109,7 @@ export function Step3({ competencies, onCompetencyChange, onNext, onBack, showMo
   return (
     <div className="opacity-0 animate-[fadeInUp_0.5s_ease_forwards]">
       <div className="mb-8 pb-6 border-b-2 border-[#0a0e27]">
-        <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#00e676] mb-2 uppercase">
+        <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#3b82f6] mb-2 uppercase">
           Etapa 3
         </div>
         <h2 className="text-4xl font-bold text-[#0a0e27] mb-2">Competências</h2>
@@ -118,7 +118,7 @@ export function Step3({ competencies, onCompetencyChange, onNext, onBack, showMo
         </div>
       </div>
 
-      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#00e676] rounded-r">
+      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <h3 className="text-2xl font-bold text-[#0a0e27] mb-4">Autoavaliação consciente</h3>
         <p className="text-[#0a0e27]">
           <strong>Seja honesto.</strong> Esta etapa existe para alinhar expectativas, não para

@@ -37,7 +37,7 @@ export function ButtonGroup({
       <button
         type="button"
         onClick={handleNext}
-        className="flex-1 px-8 py-[18px] border-none rounded font-['Space_Grotesk'] text-[15px] font-semibold tracking-wider uppercase cursor-pointer transition-all bg-[#00e676] text-[#0a0e27] hover:bg-[#00c853] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,230,118,0.3)]"
+        className="flex-1 px-8 py-[18px] border-none rounded font-['Space_Grotesk'] text-[15px] font-semibold tracking-wider uppercase cursor-pointer transition-all bg-[#3b82f6] text-white hover:bg-[#2563eb] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(59,130,246,0.3)]"
       >
         {nextLabel}
       </button>

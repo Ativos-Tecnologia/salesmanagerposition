@@ -36,14 +36,14 @@ export function Step1({
   return (
     <div className="opacity-0 animate-[fadeInUp_0.5s_ease_forwards]">
       <div className="mb-8 pb-6 border-b-2 border-[#0a0e27]">
-        <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#00e676] mb-2 uppercase">
+        <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#3b82f6] mb-2 uppercase">
           Etapa 1
         </div>
         <h2 className="text-4xl font-bold text-[#0a0e27] mb-2">Missão</h2>
         <div className="text-xl text-[#546e7a] font-medium">O "PORQUÊ"</div>
       </div>
 
-      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#00e676] rounded-r">
+      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <p className="mb-4 text-[#0a0e27]">
           A vaga envolve{' '}
           <strong>

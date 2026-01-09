@@ -26,7 +26,7 @@ export function CompetencyBlock({
     <div className="mb-12 p-8 bg-white border-2 border-[#e0e7ef] rounded">
       <div className="mb-5">
         <h3 className="text-2xl font-bold text-[#0a0e27] mb-2">{title}</h3>
-        <div className="text-base font-semibold text-[#00e676] mb-4 uppercase tracking-wider">
+        <div className="text-base font-semibold text-[#3b82f6] mb-4 uppercase tracking-wider">
           {value}
         </div>
         <div className="text-[#0a0e27]">{description}</div>

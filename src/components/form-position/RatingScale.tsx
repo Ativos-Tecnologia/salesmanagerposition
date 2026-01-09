@@ -30,13 +30,13 @@ export function RatingScale({ name, value, onChange }: RatingScaleProps) {
             htmlFor={`${name}-${rating.value}`}
             className={`flex flex-col items-center p-4 border-2 rounded cursor-pointer transition-all ${
               value === rating.value
-                ? 'border-[#00e676] bg-linear-to-br from-[#f1f8f4] to-white'
+                ? 'border-[#3b82f6] bg-linear-to-br from-[#eff6ff] to-white'
                 : 'border-[#e0e7ef] bg-white'
-            } hover:border-[#00c853] hover:-translate-y-0.5`}
+            } hover:border-[#2563eb] hover:-translate-y-0.5`}
           >
             <span
               className={`text-[28px] font-bold mb-1 ${
-                value === rating.value ? 'text-[#00e676]' : 'text-[#546e7a]'
+                value === rating.value ? 'text-[#3b82f6]' : 'text-[#546e7a]'
               }`}
             >
               {rating.value}

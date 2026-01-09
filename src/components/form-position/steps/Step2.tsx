@@ -35,7 +35,7 @@ export function Step2({ outcomes, onOutcomeChange, onNext, onBack, showModal }: 
   return (
     <div className="opacity-0 animate-[fadeInUp_0.5s_ease_forwards]">
       <div className="mb-8 pb-6 border-b-2 border-[#0a0e27]">
-        <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#00e676] mb-2 uppercase">
+        <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#3b82f6] mb-2 uppercase">
           Etapa 2
         </div>
         <h2 className="text-4xl font-bold text-[#0a0e27] mb-2">Outcomes (Resultados)</h2>
@@ -44,7 +44,7 @@ export function Step2({ outcomes, onOutcomeChange, onNext, onBack, showModal }: 
         </div>
       </div>
 
-      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#00e676] rounded-r">
+      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <p className="mb-4 text-[#0a0e27]">
           Esta função será avaliada <strong>exclusivamente pelos resultados descritos a seguir</strong>.
         </p>
@@ -52,7 +52,7 @@ export function Step2({ outcomes, onOutcomeChange, onNext, onBack, showModal }: 
           Aqui, alta performance significa entregar outcomes (resultados) de forma consistente,
           respeitando a lógica:
         </p>
-        <p className="text-center font-bold text-xl my-5 text-[#00e676]">
+        <p className="text-center font-bold text-xl my-5 text-[#3b82f6]">
           estrutura → pessoas → disciplina → conversão → escala
         </p>
       </div>
@@ -69,13 +69,13 @@ export function Step2({ outcomes, onOutcomeChange, onNext, onBack, showModal }: 
               <strong>Playbook Comercial completo</strong> para Inbound e Outbound.
             </p>
             <ul className="list-none my-4">
-              <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#00e676] before:font-bold">
+              <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
                 Scripts por etapa do funil
               </li>
-              <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#00e676] before:font-bold">
+              <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
                 Critérios objetivos de qualificação
               </li>
-              <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#00e676] before:font-bold">
+              <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
                 Regras claras de follow-up
               </li>
             </ul>
@@ -185,7 +185,7 @@ export function Step2({ outcomes, onOutcomeChange, onNext, onBack, showModal }: 
               Após estruturação, treinamento e estabilização do time:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
-              <div className="p-5 bg-[#f1f8f4] rounded">
+              <div className="p-5 bg-[#eff6ff] rounded">
                 <h4 className="mb-3 text-[#0a0e27] font-bold">Inbound (leads qualificados)</h4>
                 <ul className="list-none p-0">
                   <li className="text-[#0a0e27]">• 2% em até 3 meses</li>
@@ -193,7 +193,7 @@ export function Step2({ outcomes, onOutcomeChange, onNext, onBack, showModal }: 
                   <li className="text-[#0a0e27]">• 10% em 12 meses</li>
                 </ul>
               </div>
-              <div className="p-5 bg-[#f1f8f4] rounded">
+              <div className="p-5 bg-[#eff6ff] rounded">
                 <h4 className="mb-3 text-[#0a0e27] font-bold">Outbound (lista fria)</h4>
                 <ul className="list-none p-0">
                   <li className="text-[#0a0e27]">• 0,5% em até 3 meses</li>

@@ -29,7 +29,7 @@ export function TextField({
   return (
     <div className="my-8">
       <label htmlFor={id} className="block font-semibold mb-3 text-[#0a0e27] text-lg">
-        {required && <span className="text-[#00e676] font-bold">* </span>}
+        {required && <span className="text-[#3b82f6] font-bold">* </span>}
         {label}
       </label>
       <input
@@ -40,7 +40,7 @@ export function TextField({
         placeholder={placeholder}
         className={`w-full p-4 border-2 ${
           error ? 'border-red-600' : 'border-[#e0e7ef]'
-        } rounded font-['Space_Grotesk'] text-[17px] text-[#0a0e27] transition-all bg-white focus:outline-none focus:border-[#00e676] focus:shadow-[0_0_0_3px_rgba(0,230,118,0.1)]`}
+        } rounded font-['Space_Grotesk'] text-[17px] text-[#0a0e27] transition-all bg-white focus:outline-none focus:border-[#3b82f6] focus:shadow-[0_0_0_3px_rgba(59,130,246,0.1)]`}
       />
     </div>
   );
