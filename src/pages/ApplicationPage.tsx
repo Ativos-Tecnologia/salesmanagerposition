@@ -47,16 +47,12 @@ export function ApplicationPage() {
   }, [formData.currentStep, totalSteps]);
 
   const handleSubmit = async () => {
-    console.log('=== Iniciando submissão ===');
+
     setIsSubmitting(true);
 
     try {
-      console.log('Chamando submitApplication...');
       const result = await submitApplication();
-      console.log('Resultado:', result);
-
       if (result.success) {
-        console.log('✅ Sucesso! Movendo para tela de sucesso');
         setIsSubmitting(false);
         closeModal();
         nextStep(); // Move to success screen
