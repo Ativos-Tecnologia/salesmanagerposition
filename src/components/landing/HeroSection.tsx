@@ -48,26 +48,17 @@ export function HeroSection() {
           </div>
         </div>
         <div className="w-full lg:w-auto flex justify-center lg:justify-end">
-          <div className="w-full max-w-[340px] md:max-w-[400px] lg:w-[320px] xl:w-[360px] 2xl:w-[450px]">
-            <div className="relative w-full aspect-[9/16]">
-              {/* <iframe
-                className="absolute top-0 left-0 w-full h-full rounded-2xl z-10"
-                src="https://www.youtube.com/embed/aEoM89WpfeY"
-                title="Neymar &amp; Ronaldinho vs Argentina 🤩🪄"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              ></iframe> */}
-              <iframe
+          <div className="w-full max-w-85 md:max-w-100 lg:w-[320px] xl:w-90 2xl:w-112.5">
+            <div className="relative w-full aspect-9/16">
+              <video
                 className="absolute top-0 left-0 w-full h-full rounded-2xl z-10 pointer-events-auto"
-                src="https://www.youtube.com/embed/1ObMPFwVKDw"
-                title="COMO PRECATÓRIOS COM PROBLEMAS PODEM TE TRAZER MUITO DINHEIRO #shorts"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              ></iframe>
+                src="/video-apresentacao-landing.mp4"
+                autoPlay
+                loop
+                muted
+                controls
+                playsInline
+              ></video>
             </div>
           </div>
         </div>

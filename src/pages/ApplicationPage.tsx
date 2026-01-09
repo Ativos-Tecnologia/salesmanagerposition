@@ -33,6 +33,19 @@ export function ApplicationPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [formData.currentStep]);
 
+  // Aviso antes de sair da página
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      // Não mostrar aviso na tela de sucesso
+      if (formData.currentStep >= totalSteps) {
+        return;
+      }
+      e.preventDefault();
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  }, [formData.currentStep, totalSteps]);
+
   const handleSubmit = async () => {
     console.log('=== Iniciando submissão ===');
     setIsSubmitting(true);
