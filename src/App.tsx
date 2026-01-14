@@ -7,6 +7,8 @@ import { LoginPage } from './pages/LoginPage';
 import { AdminPage } from './pages/AdminPage';
 import { ApplicationsListPage } from './pages/ApplicationsListPage';
 import { ApplicationDetailPage } from './pages/ApplicationDetailPage';
+import { ScreeningPage } from './pages/ScreeningPage';
+import { InterviewPage } from './pages/InterviewPage';
 
 function App() {
   return (
@@ -40,6 +42,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <ApplicationDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/applications/:id/screening"
+            element={
+              <ProtectedRoute>
+                <ScreeningPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/applications/:id/interview"
+            element={
+              <ProtectedRoute>
+                <InterviewPage />
               </ProtectedRoute>
             }
           />

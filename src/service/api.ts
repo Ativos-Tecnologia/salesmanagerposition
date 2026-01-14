@@ -82,12 +82,6 @@ export async function submitApplication(
   try {
     // 1. Inserir a aplicação no banco (o ID será gerado automaticamente pelo banco)
     const dbData = transformFormDataToDatabase(formData);
-    
-    console.log('🔍 Verificando cliente Supabase:', {
-      url: import.meta.env.VITE_SUPABASE_URL,
-      keyLength: import.meta.env.VITE_SUPABASE_ANON_KEY?.length,
-      usingPublicClient: true
-    });
 
     // Usar cliente público (sem autenticação) para inserção
     const { data: applicationData, error: dbError } = await supabasePublic
@@ -95,8 +89,6 @@ export async function submitApplication(
       .insert([dbData])
       .select()
       .single();
-    
-    console.log('📡 Resposta do Supabase:', { data: applicationData, error: dbError });
 
     if (dbError) {
       return { success: false, error: dbError };
@@ -423,3 +415,135 @@ export async function getApplicationsStats() {
     return { success: false, error };
   }
 }
+
+/**
+ * Submete o formulário de Triagem Inicial
+ */
+export async function submitScreeningForm(
+  applicationId: string,
+  formData: {
+    question1: string;
+    question2: string;
+    question3: string;
+    question4: string;
+    question5: string;
+  }
+) {
+  try {
+    const { data, error } = await supabase
+      .from('applications')
+      .update({
+        screening_data: formData,
+        screening_completed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', applicationId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Erro ao salvar triagem:', error);
+      throw error;
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Erro ao salvar triagem:', error);
+    throw error;
+  }
+}
+
+/**
+ * Submete o formulário de Entrevista Principal
+ */
+export async function submitInterviewForm(
+  applicationId: string,
+  formData: {
+    currentlyEmployed: boolean;
+    q1_1: string;
+    q1_2: string;
+    q1_3: string;
+    q1_4: string;
+    q1_5: string;
+    q2_1: string;
+    q2_2: string;
+    q3_1: string;
+    q3_2: string;
+    q3_3: string;
+    q3_4: string;
+    q4_1: string;
+    q4_2: string;
+    q4_3: string;
+    q6_1: string;
+  }
+) {
+  try {
+    const { data, error } = await supabase
+      .from('applications')
+      .update({
+        interview_data: formData,
+        interview_completed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', applicationId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Erro ao salvar entrevista:', error);
+      throw error;
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Erro ao salvar entrevista:', error);
+    throw error;
+  }
+}
+
+/**
+ * Busca dados de triagem de um candidato
+ */
+export async function getScreeningForm(applicationId: string) {
+  try {
+    const { data, error } = await supabase
+      .from('applications')
+      .select('screening_data, screening_completed_at')
+      .eq('id', applicationId)
+      .single();
+
+    if (error) {
+      console.error('Erro ao buscar triagem:', error);
+      throw error;
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Erro ao buscar triagem:', error);
+    throw error;
+  }
+}
+
+/**
+ * Busca dados de entrevista de um candidato
+ */
+export async function getInterviewForm(applicationId: string) {
+  try {
+    const { data, error } = await supabase
+      .from('applications')
+      .select('interview_data, interview_completed_at')
+      .eq('id', applicationId)
+      .single();
+
+    if (error) {
+      console.error('Erro ao buscar entrevista:', error);
+      throw error;
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Erro ao buscar entrevista:', error);
+    throw error;
+  }
+}
+

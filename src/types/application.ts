@@ -27,6 +27,33 @@ export interface CompetencyResponse {
   example: string;
 }
 
+export interface ScreeningFormData {
+  question1: string; // Abertura
+  question2: string; // Placar
+  question3: string; // Playbook
+  question4: string; // Objetivos
+  question5: string; // Logística
+}
+
+export interface InterviewFormData {
+  currentlyEmployed: boolean;
+  q1_1: string; // Contratação
+  q1_2: string; // Realizações
+  q1_3: string; // Erros
+  q1_4: string; // Referências
+  q1_5: string; // Motivo saída
+  q2_1: string; // Números
+  q2_2: string; // Playbook
+  q3_1: string; // Ownership
+  q3_2: string; // Grit
+  q3_3: string; // Trabalho em Equipe
+  q3_4: string; // Rigor Analítico
+  q4_1: string; // Aprendizado
+  q4_2: string; // Inspiração
+  q4_3: string; // Receptividade
+  q6_1: string; // Risco de demissão
+}
+
 export interface ApplicationFormData {
   step0: {
     accepted: boolean;
