@@ -24,6 +24,8 @@ interface Application {
   city: string;
   state: string;
   archived: boolean;
+  screening_completed_at?: string | null;
+  interview_completed_at?: string | null;
 }
 
 type ViewMode = 'active' | 'archived';
@@ -135,7 +137,7 @@ export function ApplicationsListPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100">
       {/* Header */}
       <nav className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -220,6 +222,12 @@ export function ApplicationsListPage() {
                       <th className="text-left py-3 px-4 font-semibold text-sm">
                         Status
                       </th>
+                      <th className="text-center py-3 px-4 font-semibold text-sm">
+                        Triagem
+                      </th>
+                      <th className="text-center py-3 px-4 font-semibold text-sm">
+                        Entrevista
+                      </th>
                       <th className="text-left py-3 px-4 font-semibold text-sm">
                         Data
                       </th>
@@ -243,6 +251,20 @@ export function ApplicationsListPage() {
                         </td>
                         <td className="py-3 px-4">
                           {getStatusBadge(app.status)}
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          {app.screening_completed_at ? (
+                            <span className="inline-block w-4 h-4 rounded-full bg-green-500"></span>
+                          ) : (
+                            <span className="inline-block w-4 h-4 rounded-full bg-red-500"></span>
+                          )}
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          {app.interview_completed_at ? (
+                            <span className="inline-block w-4 h-4 rounded-full bg-green-500"></span>
+                          ) : (
+                            <span className="inline-block w-4 h-4 rounded-full bg-red-500"></span>
+                          )}
                         </td>
                         <td className="py-3 px-4 text-sm text-slate-600">
                           {new Date(app.created_at).toLocaleDateString('pt-BR')}
@@ -334,7 +356,7 @@ export function ApplicationsListPage() {
                                     currentPage === page ? 'default' : 'outline'
                                   }
                                   size="sm"
-                                  className="min-w-[40px]"
+                                  className="min-w-10"
                                 >
                                   {page}
                                 </Button>
