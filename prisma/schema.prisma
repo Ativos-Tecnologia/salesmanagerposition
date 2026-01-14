@@ -126,6 +126,9 @@ model Application {
   // Status da aplicação (para futura gestão)
   status String @default("pending") // pending, reviewing, approved, rejected
 
+  // Flag para arquivamento
+  archived Boolean @default(false)
+
   // Timestamps
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")

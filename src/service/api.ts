@@ -250,13 +250,21 @@ export async function getFileUrls(filePaths: string[]): Promise<string[]> {
 
 /**
  * Busca todas as aplicações (apenas para admins autenticados)
+ * @param archived - Se true, busca apenas arquivadas. Se false, busca apenas não arquivadas. Se undefined, busca todas.
  */
-export async function getAllApplications() {
+export async function getAllApplications(archived?: boolean) {
   try {
-    const { data, error } = await supabase
+    let query = supabase
       .from('applications')
       .select('*')
       .order('created_at', { ascending: false });
+
+    // Se archived for definido, filtra por esse valor
+    if (archived !== undefined) {
+      query = query.eq('archived', archived);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       console.error('Erro ao buscar aplicações:', error);
@@ -337,24 +345,76 @@ export async function deleteApplication(id: string) {
 }
 
 /**
+ * Arquiva uma aplicação
+ */
+export async function archiveApplication(id: string) {
+  try {
+    const { data, error } = await supabase
+      .from('applications')
+      .update({ archived: true, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Erro ao arquivar aplicação:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Erro ao arquivar aplicação:', error);
+    return { success: false, error };
+  }
+}
+
+/**
+ * Desarquiva uma aplicação
+ */
+export async function unarchiveApplication(id: string) {
+  try {
+    const { data, error } = await supabase
+      .from('applications')
+      .update({ archived: false, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Erro ao desarquivar aplicação:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Erro ao desarquivar aplicação:', error);
+    return { success: false, error };
+  }
+}
+
+/**
  * Busca estatísticas das aplicações
  */
 export async function getApplicationsStats() {
   try {
     const { data, error } = await supabase
       .from('applications')
-      .select('status');
+      .select('status, archived');
 
     if (error) {
       console.error('Erro ao buscar estatísticas:', error);
       return { success: false, error };
     }
 
+    const activeApplications = data.filter(app => !app.archived);
+
     const stats = {
       total: data.length,
-      pending: data.filter(app => app.status === 'pending').length,
-      approved: data.filter(app => app.status === 'approved').length,
-      rejected: data.filter(app => app.status === 'rejected').length,
+      active: activeApplications.length,
+      archived: data.filter(app => app.archived).length,
+      pending: activeApplications.filter(app => app.status === 'pending').length,
+      approved: activeApplications.filter(app => app.status === 'approved').length,
+      rejected: activeApplications.filter(app => app.status === 'rejected').length,
     };
 
     return { success: true, data: stats };

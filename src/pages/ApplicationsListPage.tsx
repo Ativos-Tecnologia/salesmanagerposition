@@ -1,8 +1,11 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { getAllApplications } from '../service/api';
+import {
+  getAllApplications,
+  archiveApplication,
+  unarchiveApplication,
+} from '../service/api';
 import { Button } from '../components/ui/button';
 import {
   Card,
@@ -20,32 +23,80 @@ interface Application {
   created_at: string;
   city: string;
   state: string;
+  archived: boolean;
 }
+
+type ViewMode = 'active' | 'archived';
+
+const ITEMS_PER_PAGE = 10;
 
 export function ApplicationsListPage() {
   const [applications, setApplications] = useState<Application[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<ViewMode>('active');
+  const [archivingId, setArchivingId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
-  async function loadApplications() {
-    setIsLoading(true);
-    const result = await getAllApplications();
-
-    if (result.success && result.data) {
-      setApplications(result.data as Application[]);
-    }
-
-    setIsLoading(false);
-  }
+  // Cálculos de paginação
+  const totalPages = Math.ceil(applications.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentApplications = applications.slice(startIndex, endIndex);
 
   useEffect(() => {
+    async function loadApplications() {
+      setIsLoading(true);
+      setCurrentPage(1); // Resetar para primeira página ao mudar modo
+      const isArchived = viewMode === 'archived';
+      const result = await getAllApplications(isArchived);
+
+      if (result.success && result.data) {
+        setApplications(result.data as Application[]);
+      }
+
+      setIsLoading(false);
+    }
+
     loadApplications();
-  }, []);
+  }, [viewMode]);
 
   async function handleSignOut() {
     await signOut();
     navigate('/login');
+  }
+
+  async function handleArchive(id: string) {
+    setArchivingId(id);
+    const result = await archiveApplication(id);
+
+    if (result.success) {
+      // Recarregar lista
+      const isArchived = viewMode === 'archived';
+      const reloadResult = await getAllApplications(isArchived);
+      if (reloadResult.success && reloadResult.data) {
+        setApplications(reloadResult.data as Application[]);
+      }
+    }
+
+    setArchivingId(null);
+  }
+
+  async function handleUnarchive(id: string) {
+    setArchivingId(id);
+    const result = await unarchiveApplication(id);
+
+    if (result.success) {
+      // Recarregar lista
+      const isArchived = viewMode === 'archived';
+      const reloadResult = await getAllApplications(isArchived);
+      if (reloadResult.success && reloadResult.data) {
+        setApplications(reloadResult.data as Application[]);
+      }
+    }
+
+    setArchivingId(null);
   }
 
   const getStatusBadge = (status: string) => {
@@ -71,6 +122,17 @@ export function ApplicationsListPage() {
       </span>
     );
   };
+
+  function handlePageChange(page: number) {
+    setCurrentPage(page);
+    // Scroll suave para o topo da tabela
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleViewModeChange(mode: ViewMode) {
+    setViewMode(mode);
+    setCurrentPage(1);
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
@@ -101,10 +163,36 @@ export function ApplicationsListPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Card>
           <CardHeader>
-            <CardTitle>Todas as Candidaturas</CardTitle>
-            <CardDescription>
-              {applications.length} candidatura(s) recebida(s)
-            </CardDescription>
+            <div className="flex justify-between items-center">
+              <div>
+                <CardTitle>
+                  {viewMode === 'active'
+                    ? 'Candidaturas Ativas'
+                    : 'Candidaturas Arquivadas'}
+                </CardTitle>
+                <CardDescription>
+                  {applications.length} candidatura(s){' '}
+                  {viewMode === 'active' ? 'ativa(s)' : 'arquivada(s)'} • Página{' '}
+                  {currentPage} de {totalPages || 1}
+                </CardDescription>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => handleViewModeChange('active')}
+                  variant={viewMode === 'active' ? 'default' : 'outline'}
+                  size="sm"
+                >
+                  Ativas
+                </Button>
+                <Button
+                  onClick={() => handleViewModeChange('archived')}
+                  variant={viewMode === 'archived' ? 'default' : 'outline'}
+                  size="sm"
+                >
+                  Arquivadas
+                </Button>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -141,7 +229,7 @@ export function ApplicationsListPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {applications.map(app => (
+                    {currentApplications.map(app => (
                       <tr
                         key={app.id}
                         className="border-b hover:bg-slate-50 transition-colors"
@@ -160,20 +248,112 @@ export function ApplicationsListPage() {
                           {new Date(app.created_at).toLocaleDateString('pt-BR')}
                         </td>
                         <td className="py-3 px-4">
-                          <Button
-                            onClick={() =>
-                              navigate(`/admin/applications/${app.id}`)
-                            }
-                            variant="outline"
-                            size="sm"
-                          >
-                            Ver detalhes
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button
+                              onClick={() =>
+                                navigate(`/admin/applications/${app.id}`)
+                              }
+                              variant="outline"
+                              size="sm"
+                            >
+                              Ver detalhes
+                            </Button>
+                            {viewMode === 'active' ? (
+                              <Button
+                                onClick={() => handleArchive(app.id)}
+                                variant="outline"
+                                size="sm"
+                                disabled={archivingId === app.id}
+                              >
+                                {archivingId === app.id
+                                  ? 'Arquivando...'
+                                  : 'Arquivar'}
+                              </Button>
+                            ) : (
+                              <Button
+                                onClick={() => handleUnarchive(app.id)}
+                                variant="outline"
+                                size="sm"
+                                disabled={archivingId === app.id}
+                              >
+                                {archivingId === app.id
+                                  ? 'Desarquivando...'
+                                  : 'Desarquivar'}
+                              </Button>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+
+                {/* Paginação */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-between mt-6 pt-4 border-t">
+                    <div className="text-sm text-slate-600">
+                      Mostrando {startIndex + 1} a{' '}
+                      {Math.min(endIndex, applications.length)} de{' '}
+                      {applications.length} candidatura(s)
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        variant="outline"
+                        size="sm"
+                      >
+                        ← Anterior
+                      </Button>
+
+                      <div className="flex gap-1">
+                        {Array.from({ length: totalPages }, (_, i) => i + 1)
+                          .filter(page => {
+                            // Mostrar sempre primeira, última e páginas próximas à atual
+                            if (page === 1 || page === totalPages) return true;
+                            if (Math.abs(page - currentPage) <= 1) return true;
+                            return false;
+                          })
+                          .map((page, index, array) => {
+                            // Adicionar "..." entre números não consecutivos
+                            const prevPage = array[index - 1];
+                            const showEllipsis =
+                              prevPage && page - prevPage > 1;
+
+                            return (
+                              <div key={page} className="flex items-center">
+                                {showEllipsis && (
+                                  <span className="px-2 text-slate-400">
+                                    ...
+                                  </span>
+                                )}
+                                <Button
+                                  onClick={() => handlePageChange(page)}
+                                  variant={
+                                    currentPage === page ? 'default' : 'outline'
+                                  }
+                                  size="sm"
+                                  className="min-w-[40px]"
+                                >
+                                  {page}
+                                </Button>
+                              </div>
+                            );
+                          })}
+                      </div>
+
+                      <Button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        variant="outline"
+                        size="sm"
+                      >
+                        Próxima →
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </CardContent>
