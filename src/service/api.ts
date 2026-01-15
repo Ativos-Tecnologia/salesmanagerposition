@@ -401,12 +401,15 @@ export async function getApplicationsStats() {
     const activeApplications = data.filter(app => !app.archived);
 
     const stats = {
-      total: data.length,
+      total: activeApplications.length,
       active: activeApplications.length,
       archived: data.filter(app => app.archived).length,
-      pending: activeApplications.filter(app => app.status === 'pending').length,
-      approved: activeApplications.filter(app => app.status === 'approved').length,
-      rejected: activeApplications.filter(app => app.status === 'rejected').length,
+      pending: activeApplications.filter(app => app.status === 'pending')
+        .length,
+      approved: activeApplications.filter(app => app.status === 'approved')
+        .length,
+      rejected: activeApplications.filter(app => app.status === 'rejected')
+        .length,
     };
 
     return { success: true, data: stats };
