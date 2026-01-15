@@ -32,17 +32,21 @@ export function Step0({ accepted, onAcceptedChange, onNext, showModal }: Step0Pr
         <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#3b82f6] mb-2 uppercase">
           Etapa Inicial
         </div>
-        <h2 className="text-4xl font-bold text-[#0a0e27] mb-2">Contexto Geral da Vaga</h2>
+        <h2 className="text-4xl font-bold text-[#0a0e27] mb-2">
+          Contexto Geral da Vaga
+        </h2>
       </div>
 
       <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <h3 className="text-2xl font-bold text-[#0a0e27] mb-4">
           Leia com atenção antes de começar o preenchimento
         </h3>
-        <p className="mb-4 text-[#0a0e27]">A Ativos não utiliza descrições de cargo tradicionais.</p>
         <p className="mb-4 text-[#0a0e27]">
-          Esta vaga é avaliada por <strong>scorecard</strong>, o que significa que desde o início
-          deixamos claro:
+          A Ativos não utiliza descrições de cargo tradicionais.
+        </p>
+        <p className="mb-4 text-[#0a0e27]">
+          Esta vaga é avaliada por <strong>scorecard</strong>, o que significa
+          que desde o início deixamos claro:
         </p>
         <ul className="list-none my-4">
           <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
@@ -58,9 +62,22 @@ export function Step0({ accepted, onAcceptedChange, onNext, showModal }: Step0Pr
             quais comportamentos são inegociáveis
           </li>
         </ul>
-        <p className="mb-4 text-[#0a0e27]">Este processo exige leitura, reflexão e honestidade.</p>
+        <p className="mb-4 text-[#0a0e27]">
+          Este processo exige leitura, reflexão e honestidade.
+        </p>
         <p className="text-[#0a0e27]">
-          <strong>Preferimos poucos candidatos bem alinhados a muitos candidatos genéricos.</strong>
+          <strong>
+            Preferimos poucos candidatos bem alinhados a muitos candidatos
+            genéricos.
+          </strong>
+        </p>
+      </div>
+
+      <div className="bg-blue-500 ">
+        <p className="mb-8 p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-800">
+          <strong>Atencão</strong>: Vaga é presencial na cidade do Recife/PE.
+          Candidatos de outras cidades precisaram estar dispostos a mudar de
+          residência.
         </p>
       </div>
 
