@@ -7,7 +7,6 @@ import { Step0 } from '../components/form-position/steps/Step0';
 import { Step1 } from '../components/form-position/steps/Step1';
 import { Step2 } from '../components/form-position/steps/Step2';
 import { Step3 } from '../components/form-position/steps/Step3';
-import { Step4 } from '../components/form-position/steps/Step4';
 import { SuccessScreen } from '../components/form-position/SuccessScreen';
 
 export function ApplicationPage() {
@@ -15,10 +14,9 @@ export function ApplicationPage() {
     formData,
     isLoading,
     updateStep0,
-    updateStep1,
     updateOutcome,
     updateCompetency,
-    updateStep4,
+    updateStep3,
     nextStep,
     previousStep,
     submitApplication,
@@ -28,18 +26,13 @@ export function ApplicationPage() {
   const { modal, showModal, closeModal } = useModal();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Scroll para o topo sempre que a etapa mudar
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [formData.currentStep]);
 
-  // Aviso antes de sair da página
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      // Não mostrar aviso na tela de sucesso
-      if (formData.currentStep >= totalSteps) {
-        return;
-      }
+      if (formData.currentStep >= totalSteps) return;
       e.preventDefault();
     };
 
@@ -47,7 +40,6 @@ export function ApplicationPage() {
   }, [formData.currentStep, totalSteps]);
 
   const handleSubmit = async () => {
-
     setIsSubmitting(true);
 
     try {
@@ -55,7 +47,7 @@ export function ApplicationPage() {
       if (result.success) {
         setIsSubmitting(false);
         closeModal();
-        nextStep(); // Move to success screen
+        nextStep();
       } else {
         console.error('❌ Erro na submissão:', result.error);
         setIsSubmitting(false);
@@ -106,12 +98,12 @@ export function ApplicationPage() {
           Ativos
         </div>
         <h1 className="text-4xl md:text-5xl font-extrabold leading-[1.1] text-[#0a0e27] mb-3">
-          Formulário de Aplicação à Vaga de
+          Desenvolvedor de
           <br />
-          Sales Manager de Precatórios
+          Automações & IA
         </h1>
         <div className="text-2xl font-medium text-[#546e7a]">
-          (Inbound & Outbound)
+          n8n · Scraping · APIs · Integração com IA
         </div>
       </div>
 
@@ -131,7 +123,8 @@ export function ApplicationPage() {
               {formData.currentStep === 0 && (
                 <Step0
                   accepted={formData.step0.accepted}
-                  onAcceptedChange={updateStep0}
+                  missionMotivation={formData.step0.missionMotivation}
+                  onStep0Change={updateStep0}
                   onNext={nextStep}
                   showModal={showModal}
                 />
@@ -139,14 +132,8 @@ export function ApplicationPage() {
 
               {formData.currentStep === 1 && (
                 <Step1
-                  accepted={formData.step1.accepted}
-                  missionReflection={formData.step1.missionReflection}
-                  onAcceptedChange={(accepted: boolean) =>
-                    updateStep1({ accepted })
-                  }
-                  onMissionReflectionChange={(missionReflection: string) =>
-                    updateStep1({ missionReflection })
-                  }
+                  outcomes={formData.step1.outcomes}
+                  onOutcomeChange={updateOutcome}
                   onNext={nextStep}
                   onBack={previousStep}
                   showModal={showModal}
@@ -155,13 +142,8 @@ export function ApplicationPage() {
 
               {formData.currentStep === 2 && (
                 <Step2
-                  outcomes={formData.step2.outcomes}
-                  onOutcomeChange={(key, data) =>
-                    updateOutcome(
-                      key as keyof typeof formData.step2.outcomes,
-                      data
-                    )
-                  }
+                  competencies={formData.step2.competencies}
+                  onCompetencyChange={updateCompetency}
                   onNext={nextStep}
                   onBack={previousStep}
                   showModal={showModal}
@@ -170,18 +152,8 @@ export function ApplicationPage() {
 
               {formData.currentStep === 3 && (
                 <Step3
-                  competencies={formData.step3.competencies}
-                  onCompetencyChange={updateCompetency}
-                  onNext={nextStep}
-                  onBack={previousStep}
-                  showModal={showModal}
-                />
-              )}
-
-              {formData.currentStep === 4 && (
-                <Step4
-                  data={formData.step4}
-                  onDataChange={updateStep4}
+                  data={formData.step3}
+                  onDataChange={updateStep3}
                   onSubmit={handleSubmit}
                   onBack={previousStep}
                   showModal={showModal}
@@ -191,7 +163,6 @@ export function ApplicationPage() {
           )}
         </div>
 
-        {/* Overlay de carregamento durante o envio */}
         {isSubmitting && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-8 rounded-lg shadow-xl text-center">
@@ -199,9 +170,9 @@ export function ApplicationPage() {
               <p className="text-xl font-semibold text-[#0a0e27]">
                 Enviando sua aplicação...
               </p>
-              {formData.step4.files && formData.step4.files.length > 0 && (
+              {formData.step3.files && formData.step3.files.length > 0 && (
                 <p className="text-sm text-[#546e7a] mt-2">
-                  Fazendo upload de {formData.step4.files.length} arquivo(s)
+                  Fazendo upload de {formData.step3.files.length} arquivo(s)
                 </p>
               )}
             </div>
