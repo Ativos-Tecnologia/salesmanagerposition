@@ -17,9 +17,8 @@ export function CTASection() {
             titleVisible ? 'visible' : ''
           } font-['Space_Grotesk'] text-2xl lg:text-6xl leading-[1.25] font-black`}
         >
-          Orquestre o Futuro: Venha Fazer o Melhor
-          <br /> Trabalho da Sua Vida na Revolução de
-          <br /> Vendas 2.0 do Mercado de Precatórios
+          Construa a Infraestrutura
+          <br /> Inteligente da Ativos
         </h2>
         <div className="w-1/3 h-[2px] bg-[#ffffff4b] mx-auto" />
         <p
@@ -28,9 +27,9 @@ export function CTASection() {
             quoteVisible ? 'visible' : ''
           } text-lg lg:text-2xl italic max-w-5xl mx-auto text-[#e8e6dd] leading-[1.7]`}
         >
-          Construa a máquina, lidere a execução e veja o seu impacto. Procure
-          seu próximo caso de sucesso estruturando a operação comercial de elite
-          de uma potência em plena escala.
+          Se você já construiu automações, scrapers e integrações que rodam de
+          verdade, esse é o lugar certo. Mostre o que já fez e venha construir
+          com a gente.
         </p>
 
         <Link

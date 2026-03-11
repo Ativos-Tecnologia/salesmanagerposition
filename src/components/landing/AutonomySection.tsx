@@ -3,19 +3,19 @@ import { Grid } from './gridPattern';
 
 const grid = [
   {
-    title: 'Estruturar operações inbound e outbound do zero',
+    title: 'Experiência prática com automações (n8n, Zapier, Make ou similar)',
   },
   {
-    title: 'Definir scripts, cadências e processos comerciais',
+    title: 'Saber fazer web scraping e lidar com sites que bloqueiam',
   },
   {
-    title: 'Treinar o time e elevar o nível médio da operação',
+    title: 'Ter integrado APIs e construído endpoints',
   },
   {
-    title: 'Trabalhar diretamente com liderança e áreas estratégicas',
+    title: 'Saber usar IA (OpenAI, Gemini) dentro de fluxos reais',
   },
   {
-    title: 'Criar processos que escalam sem depender de você o tempo todo',
+    title: 'Conseguir manter o que construiu rodando em produção',
   },
 ];
 
@@ -35,7 +35,7 @@ export function AutonomySection() {
               titleVisible ? 'visible' : ''
             } font-['Space_Grotesk'] text-2xl lg:text-4xl font-black text-(--navy-deep) `}
           >
-            Autonomia com Responsabilidade
+            O Que Esperamos de Você
           </h2>
           <div className="max-w-[800px] mx-auto">
             <div
@@ -44,12 +44,9 @@ export function AutonomySection() {
                 introVisible ? 'visible' : ''
               } text-lg lg:text-2xl text-[#515151] text-center `}
             >
-              <strong>
-                Você terá autonomia real para criar um novo pilar de crescimento
-                da empresa.
-              </strong>
-              Não buscamos alguém para rodar operação — buscamos alguém para
-              construir.
+              <strong>Alguém que já construiu coisas de verdade.</strong> Não
+              precisa ser sênior. Precisa ser alguém que resolve, aprende rápido
+              e não empurra problema pra frente.
             </div>
           </div>
         </div>

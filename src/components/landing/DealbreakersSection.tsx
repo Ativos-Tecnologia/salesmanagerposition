@@ -2,10 +2,10 @@ import { OctagonAlert, X } from 'lucide-react';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
 const dealbreakers = [
-  'Você só funciona com operação pronta e estruturada',
-  'Você evita liderar pessoas e desenvolver equipes',
-  'Você se incomoda com metas claras e cobrança objetiva',
-  'Você busca estabilidade sem desafio estratégico',
+  'Você só programa com tutorial aberto do lado',
+  'Você não gosta de manter o que construiu',
+  'Você precisa que alguém diga cada passo do que fazer',
+  'Você acha que IA é só ChatGPT no navegador',
 ];
 
 function DealBreakerItem({ text }: { text: string }) {
@@ -63,8 +63,7 @@ export function DealbreakersSection() {
                 subtitleVisible ? 'visible' : ''
               } text-lg lg:text-2xl text-[#FFFFFF] max-w-[700px] mx-auto mt-8 leading-[1.8]`}
             >
-              Seja honesto consigo mesmo antes de avançar. Este papel exige
-              perfil específico.
+              Seja honesto antes de avançar. Esse papel exige perfil específico.
             </p>
           </div>
         </div>
@@ -81,7 +80,7 @@ export function DealbreakersSection() {
           } p-4 bg-white border rounded-full border-(--navy-deep) border-l-4 border-l-[#000000] shadow-[8px_8px_0_rgba(0,30,98,0.1)] transition-all duration-400 relative hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0_rgba(0,30,98,0.15)]`}
         >
           <h3 className="font-['Space_Grotesk'] text-lg lg:text-2xl text-center lg:text-left text-[#C02626] font-bold p-2">
-            Este é um papel para quem quer construir, não apenas manter
+            👉 Essa vaga é para quem constrói, não para quem só estuda.
           </h3>
         </div>
       </div>

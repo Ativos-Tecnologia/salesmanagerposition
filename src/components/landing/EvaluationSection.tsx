@@ -1,29 +1,24 @@
-import {
-  ChartNoAxesCombined,
-  Component,
-  Expand,
-  type LucideIcon,
-} from 'lucide-react';
+import { Settings, Search, BookOpen, type LucideIcon } from 'lucide-react';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
 const evaluationCriteria = [
   {
-    icon: ChartNoAxesCombined,
-    title: 'Resultados Mensuráveis',
+    icon: Settings,
+    title: 'Entregas em Produção',
     description:
-      'Você será avaliado por entregas concretas, métricas claras e impacto real no crescimento da operação.',
+      'Automações, scrapers e integrações funcionando de verdade, usados pelo time no dia a dia.',
   },
   {
-    icon: Component,
-    title: 'Desenvolvimento da Equipe',
+    icon: Search,
+    title: 'Capacidade de Resolver',
     description:
-      'Sua capacidade de treinar, elevar o nível médio e construir uma cultura de alta performance.',
+      'Quando algo quebra, você investiga, resolve e documenta. Não espera alguém pedir.',
   },
   {
-    icon: Expand,
-    title: 'Processos que Escalam',
+    icon: BookOpen,
+    title: 'Documentação e Manutenção',
     description:
-      'Estruturas que funcionam com ou sem você. Playbooks que podem ser replicados e melhorados continuamente.',
+      'O que você constrói precisa ser entendido e mantido por outros. Código limpo, fluxos claros, zero caixa-preta.',
   },
 ];
 
@@ -79,8 +74,7 @@ export function EvaluationSection() {
               subtitleVisible ? 'visible' : ''
             } text-lg lg:text-2xl text-(--text-faded) w-full mx-auto  leading-[1.8]`}
           >
-            Somos transparentes desde o início. Sem surpresas. Sem discurso
-            vazio.
+            Transparência total. Sem surpresa. Sem discurso vazio.
           </p>
         </div>
 
