@@ -8,65 +8,31 @@ function transformFormDataToDatabase(formData: ApplicationFormData) {
   return {
     // Step 0
     step0_accepted: formData.step0.accepted,
+    mission_motivation: formData.step0.missionMotivation,
 
-    // Step 1
-    step1_accepted: formData.step1.accepted,
-    step1_mission_reflection: formData.step1.missionReflection,
+    // Step 1 - Outcomes (JSONB array)
+    outcomes: formData.step1.outcomes,
 
-    // Step 2 - Outcomes
-    outcome21_playbook_accepted: formData.step2.outcomes.playbook.accepted,
-    outcome21_playbook_comment: formData.step2.outcomes.playbook.comment,
+    // Step 2 - Competências (JSONB array)
+    competencies: formData.step2.competencies,
 
-    outcome22_team_restructure_accepted:
-      formData.step2.outcomes.teamRestructure.accepted,
-    outcome22_team_restructure_comment:
-      formData.step2.outcomes.teamRestructure.comment,
+    // Step 3 - Informações Pessoais
+    full_name: formData.step3.personalInfo.fullName,
+    cpf: formData.step3.personalInfo.cpf,
+    birth_date: formData.step3.personalInfo.birthDate,
+    city: formData.step3.personalInfo.city,
+    state: formData.step3.personalInfo.state,
 
-    outcome23_operational_discipline_accepted:
-      formData.step2.outcomes.operationalDiscipline.accepted,
-    outcome23_operational_discipline_comment:
-      formData.step2.outcomes.operationalDiscipline.comment,
+    // Step 3 - Contato
+    email: formData.step3.contact.email,
+    whatsapp: formData.step3.contact.whatsapp,
 
-    outcome24_high_performance_accepted:
-      formData.step2.outcomes.highPerformance.accepted,
-    outcome24_high_performance_comment:
-      formData.step2.outcomes.highPerformance.comment,
-
-    outcome241_bar_raiser_accepted: formData.step2.outcomes.barRaiser.accepted,
-    outcome241_bar_raiser_comment: formData.step2.outcomes.barRaiser.comment,
-
-    outcome242_accountability_accepted:
-      formData.step2.outcomes.accountability.accepted,
-    outcome242_accountability_comment:
-      formData.step2.outcomes.accountability.comment,
-
-    outcome26_conversion_accepted: formData.step2.outcomes.conversion.accepted,
-    outcome26_conversion_comment: formData.step2.outcomes.conversion.comment,
-
-    outcome27_ai_accepted: formData.step2.outcomes.ai.accepted,
-    outcome27_ai_comment: formData.step2.outcomes.ai.comment,
-
-    // Step 3 - Competências (como JSON)
-    competencies: formData.step3.competencies,
-
-    // Step 4 - Informações Pessoais
-    full_name: formData.step4.personalInfo.fullName,
-    cpf: formData.step4.personalInfo.cpf,
-    birth_date: formData.step4.personalInfo.birthDate,
-    city: formData.step4.personalInfo.city,
-    state: formData.step4.personalInfo.state,
-
-    // Step 4 - Contato
-    email: formData.step4.contact.email,
-    whatsapp: formData.step4.contact.whatsapp,
-
-    // Step 4 - Redes Sociais
-    social_media: formData.step4.socialMedia.length > 0 ? formData.step4.socialMedia : null,
-
-    // Step 4 - Finalização
-    salary_expectation: formData.step4.salaryExpectation,
-    final_notes: formData.step4.finalNotes,
-    documents: formData.step4.files.map((file: File) => file.name), // Por enquanto apenas os nomes
+    // Step 3 - Profissional
+    github_link: formData.step3.githubLink || null,
+    salary_expectation: formData.step3.salaryExpectation,
+    availability: formData.step3.availability,
+    final_notes: formData.step3.finalNotes || null,
+    documents: formData.step3.files.map((file: File) => file.name),
 
     // Status inicial
     status: 'pending',
@@ -80,56 +46,34 @@ export async function submitApplication(
   formData: ApplicationFormData
 ): Promise<{ success: boolean; data?: unknown; error?: unknown }> {
   try {
-    // 1. Inserir a aplicação no banco (o ID será gerado automaticamente pelo banco)
-    const dbData = transformFormDataToDatabase(formData);
+    // Gerar UUID no cliente para evitar o SELECT após INSERT (problema de RLS com anon)
+    const applicationId = crypto.randomUUID();
+    const dbData = {
+      id: applicationId,
+      ...transformFormDataToDatabase(formData),
+    };
 
-    // Usar cliente público (sem autenticação) para inserção
-    const { data: applicationData, error: dbError } = await supabasePublic
+    // Usar cliente público (sem autenticação) para inserção — sem .select()
+    const { error: dbError } = await supabasePublic
       .from('applications')
-      .insert([dbData])
-      .select()
-      .single();
+      .insert([dbData]);
 
     if (dbError) {
       return { success: false, error: dbError };
     }
 
-    const applicationId = applicationData.id;
-    let photoUrl: string | null = null;
-
-    // 2. Upload da foto (se existir)
-    if (formData.step4.photo) {
-      const photoFile = formData.step4.photo;
-      const photoExt = photoFile.name.split('.').pop();
-      const photoPath = `${applicationId}/photo/${Date.now()}.${photoExt}`;
-
-      const { error: photoError } = await supabase.storage
-        .from('files-sales-manager')
-        .upload(photoPath, photoFile, {
-          cacheControl: '3600',
-          upsert: false,
-        });
-
-      if (photoError) {
-        console.error('❌ Erro no upload da foto:', photoError);
-      } else {
-        photoUrl = photoPath;
-      }
-    }
-
-    // 3. Se houver arquivos, fazer upload
-    if (formData.step4.files && formData.step4.files.length > 0) {
+    // 2. Se houver arquivos, fazer upload
+    if (formData.step3.files && formData.step3.files.length > 0) {
       const uploadResult = await uploadDocuments(
-        formData.step4.files,
+        formData.step3.files,
         applicationId
       );
 
       if (!uploadResult.success) {
         console.error('Erro ao fazer upload de arquivos:', uploadResult.error);
-        // Aplicação foi criada, mas arquivos falharam
         return {
           success: true,
-          data: applicationData,
+          data: { id: applicationId },
           error: {
             message: 'Aplicação criada, mas erro ao enviar arquivos',
             uploadError: uploadResult.error,
@@ -137,27 +81,18 @@ export async function submitApplication(
         };
       }
 
-      // 4. Atualizar a aplicação com os caminhos dos arquivos e foto
-      const updateData: { documents: string[]; photo_url?: string } = {
-        documents: uploadResult.urls || [],
-      };
-      if (photoUrl) {
-        updateData.photo_url = photoUrl;
-      }
-
+      // 3. Atualizar a aplicação com os caminhos dos arquivos
       const { error: updateError } = await supabase
         .from('applications')
-        .update(updateData)
+        .update({ documents: uploadResult.urls || [] })
         .eq('id', applicationId);
 
       if (updateError) {
         console.error('Erro ao atualizar documentos:', updateError);
-      } else {
-        console.error('Documentos atualizados com sucesso');
       }
     }
 
-    return { success: true, data: applicationData };
+    return { success: true, data: { id: applicationId } };
   } catch (error) {
     console.error('Erro ao enviar aplicação:', error);
     return { success: false, error };
