@@ -1,14 +1,29 @@
 import { CheckboxField } from '../CheckboxField';
+import { TextAreaField } from '../TextAreaField';
 import { ButtonGroup } from '../ButtonGroup';
 
 interface Step0Props {
   accepted: boolean;
-  onAcceptedChange: (accepted: boolean) => void;
+  missionMotivation: string;
+  onStep0Change: (data: {
+    accepted?: boolean;
+    missionMotivation?: string;
+  }) => void;
   onNext: () => void;
-  showModal: (message: string, title?: string, type?: 'error' | 'success' | 'warning' | 'info') => void;
+  showModal: (
+    message: string,
+    title?: string,
+    type?: 'error' | 'success' | 'warning' | 'info'
+  ) => void;
 }
 
-export function Step0({ accepted, onAcceptedChange, onNext, showModal }: Step0Props) {
+export function Step0({
+  accepted,
+  missionMotivation,
+  onStep0Change,
+  onNext,
+  showModal,
+}: Step0Props) {
   const handleNext = () => {
     if (!accepted) {
       showModal(
@@ -23,6 +38,19 @@ export function Step0({ accepted, onAcceptedChange, onNext, showModal }: Step0Pr
       }, 100);
       return;
     }
+    if (missionMotivation.length < 100) {
+      showModal(
+        `Campo "Por que essa vaga faz sentido pra você agora?": sua resposta tem ${missionMotivation.length} caracteres. São necessários pelo menos 100 caracteres.`,
+        'Campo obrigatório incompleto',
+        'warning'
+      );
+      setTimeout(() => {
+        document
+          .getElementById('mission-motivation')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+      return;
+    }
     onNext();
   };
 
@@ -32,65 +60,79 @@ export function Step0({ accepted, onAcceptedChange, onNext, showModal }: Step0Pr
         <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#3b82f6] mb-2 uppercase">
           Etapa Inicial
         </div>
-        <h2 className="text-4xl font-bold text-[#0a0e27] mb-2">
-          Contexto Geral da Vaga
-        </h2>
+        <h2 className="text-4xl font-bold text-[#0a0e27] mb-2">Sobre a Vaga</h2>
       </div>
 
       <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <h3 className="text-2xl font-bold text-[#0a0e27] mb-4">
-          Leia com atenção antes de começar o preenchimento
+          O que você vai fazer aqui
         </h3>
         <p className="mb-4 text-[#0a0e27]">
-          A Ativos não utiliza descrições de cargo tradicionais.
+          Construir e manter{' '}
+          <strong>automações, scrapers, integrações e soluções com IA</strong>{' '}
+          que fazem a operação da Ativos funcionar.
         </p>
         <p className="mb-4 text-[#0a0e27]">
-          Esta vaga é avaliada por <strong>scorecard</strong>, o que significa
-          que desde o início deixamos claro:
-        </p>
-        <ul className="list-none my-4">
-          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
-            qual é a missão da função
-          </li>
-          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
-            quais resultados são esperados
-          </li>
-          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
-            como o desempenho será avaliado
-          </li>
-          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
-            quais comportamentos são inegociáveis
-          </li>
-        </ul>
-        <p className="mb-4 text-[#0a0e27]">
-          Este processo exige leitura, reflexão e honestidade.
+          No dia a dia: fluxos em n8n, coleta de dados de sites públicos,
+          integração entre sistemas via API, e uso de IA para resolver problemas
+          reais.
         </p>
         <p className="text-[#0a0e27]">
-          <strong>
-            Preferimos poucos candidatos bem alinhados a muitos candidatos
-            genéricos.
-          </strong>
+          <strong>Não é vaga de gestão.</strong> É vaga de quem constrói.
         </p>
       </div>
 
-      <div className="bg-blue-500 ">
-        <p className="mb-8 p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-800">
-          <strong>Atencão</strong>: Vaga é presencial na cidade do Recife/PE.
-          Candidatos de outras cidades precisaram estar dispostos a mudar de
-          residência.
+      <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
+        <h3 className="text-2xl font-bold text-[#0a0e27] mb-4">
+          Como funciona este processo
+        </h3>
+        <p className="mb-4 text-[#0a0e27]">
+          A Ativos não usa descrição de cargo tradicional. Aqui a gente deixa
+          claro desde o início:
+        </p>
+        <ul className="list-none my-4">
+          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
+            o que você vai precisar entregar
+          </li>
+          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
+            como vai ser avaliado
+          </li>
+          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
+            o que a gente espera de comportamento
+          </li>
+        </ul>
+        <p className="mb-4 text-[#0a0e27]">
+          É um processo que exige leitura e honestidade.{' '}
+          <strong>
+            Preferimos poucos candidatos alinhados a muitos candidatos
+            genéricos.
+          </strong>
+        </p>
+        <p className="mt-4 p-4 bg-[#e8f5e9] rounded text-[#0a0e27]">
+          Não é necessário saber nada sobre precatórios. A gente ensina.
         </p>
       </div>
 
       <CheckboxField
         id="check0"
         checked={accepted}
-        onChange={onAcceptedChange}
-        label="Li e entendi que este processo avalia como eu construo resultados, não apenas meu histórico profissional."
+        onChange={v => onStep0Change({ accepted: v })}
+        label="Entendi. O processo avalia o que eu já construí e como resolvo problemas, não apenas meu currículo."
         required
+      />
+
+      <TextAreaField
+        id="mission-motivation"
+        value={missionMotivation}
+        onChange={v => onStep0Change({ missionMotivation: v })}
+        label="Por que essa vaga faz sentido pra você agora?"
+        placeholder="Pode ser direto. O que te atraiu?"
+        required
+        minChars={100}
+        error={missionMotivation.length > 0 && missionMotivation.length < 100}
       />
 
       <ButtonGroup onNext={handleNext} showBack={false} />
     </div>
   );
 }
-

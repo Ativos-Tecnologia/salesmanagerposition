@@ -4,33 +4,47 @@ import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 const pillars = [
   {
     number: '1',
-    title: 'Alinhamento',
-    description: 'Construir novas frentes dentro de empresas consolidadas. Se você gosta de desafios que aceleram carreira, este é o lugar.',
+    title: 'Impacto',
+    description:
+      'O que você construir vai rodar em produção e ser usado pelo time inteiro. Nada de projeto que morre na gaveta.',
   },
   {
     number: '2',
-    title: 'Flexibilidade',
-    description: 'Cobrança clara por resultado. Ambiente direto. Pouca hierarquia, pouca política. Foco em execução.',
+    title: 'Autonomia',
+    description:
+      'Sem microgerenciamento. Você recebe o problema, entende o contexto e resolve. Cobrança por resultado, não por hora.',
   },
   {
     number: '3',
-    title: 'Liberdade',
-    description: 'Autonomia real para estruturar do zero. Trabalho direto com liderança. Liberdade com responsabilidade proporcional.',
+    title: 'Tecnologia',
+    description:
+      'n8n, APIs, scraping, IA, banco de dados. Stack moderna e espaço pra testar ferramentas novas.',
   },
   {
     number: '4',
-    title: 'Ganhos',
-    description: 'Fixo competitivo + variável agressivo. Upside claro para quem constrói algo que escala. Não há limites para crescer.',
+    title: 'Crescimento',
+    description:
+      'Empresa em escala com muito a construir. Quem entrega bem aqui cresce rápido.',
   },
 ];
 
-function PillarCard({ number, title, description }: { number: string; title: string; description: string }) {
+function PillarCard({
+  number,
+  title,
+  description,
+}: {
+  number: string;
+  title: string;
+  description: string;
+}) {
   const { elementRef, isVisible } = useScrollAnimation();
 
   return (
     <div
       ref={elementRef}
-      className={`fade-in ${isVisible ? 'visible' : ''} text-center p-12 pt-12 pb-12 bg-white/5 border rounded-2xl border-[#ffffff4b] relative transition-all duration-400 hover:bg-white/10 hover:border-(--cream)/40 hover:-translate-y-2 before:content-[''] before:absolute before:top-0 before:left-0  before:w-1/3 before:mx-auto before:right-0 before:h-[3px] before:bg-[#FFFFFF] before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100 before:rounded-full`}
+      className={`fade-in ${
+        isVisible ? 'visible' : ''
+      } text-center p-12 pt-12 pb-12 bg-white/5 border rounded-2xl border-[#ffffff4b] relative transition-all duration-400 hover:bg-white/10 hover:border-(--cream)/40 hover:-translate-y-2 before:content-[''] before:absolute before:top-0 before:left-0  before:w-1/3 before:mx-auto before:right-0 before:h-[3px] before:bg-[#FFFFFF] before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100 before:rounded-full`}
     >
       <div className="inline-block w-[70px] h-[70px] leading-[70px] bg-white border-[3px] border-[#FFFFFF] rounded-full font-['Space_Grotesk'] text-[2rem] font-black mb-6 text-[#041293]">
         {number}
@@ -44,8 +58,10 @@ function PillarCard({ number, title, description }: { number: string; title: str
 }
 
 export function PillarsSection() {
-  const { elementRef: titleRef, isVisible: titleVisible } = useScrollAnimation();
-  const { elementRef: subtitleRef, isVisible: subtitleVisible } = useScrollAnimation();
+  const { elementRef: titleRef, isVisible: titleVisible } =
+    useScrollAnimation();
+  const { elementRef: subtitleRef, isVisible: subtitleVisible } =
+    useScrollAnimation();
 
   return (
     <section className="py-24 relative bg-[#041293] text-(--cream)">
@@ -58,7 +74,7 @@ export function PillarsSection() {
               titleVisible ? 'visible' : ''
             } font-['Space_Grotesk'] text-2xl lg:text-4xl font-black text-(--cream) `}
           >
-            Os 4 Pilares Desta Posição
+            Por Que Trabalhar na Ativos
           </h2>
 
           <p
@@ -67,7 +83,7 @@ export function PillarsSection() {
               subtitleVisible ? 'visible' : ''
             } text-lg lg:text-2xl text-[#c8c6bd] max-w-[700px] mx-auto  leading-[1.8]`}
           >
-            Construção real, responsabilidade real e impacto mensurável.
+            Ambiente direto, sem enrolação, com espaço real pra construir.
           </p>
           <div className="w-1/2 h-[2px] bg-[#ffffff4b] mx-auto" />
         </div>

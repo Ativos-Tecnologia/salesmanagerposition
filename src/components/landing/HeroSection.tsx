@@ -23,16 +23,15 @@ export function HeroSection() {
               className="px-4 py-2 rounded-full text-(--cream) font-['Space_Grotesk'] text-sm font-thin border border-(--cream)"
               style={{ animation: 'fadeInDown 1s ease-out' }}
             >
-              Oportunidade Estratégica
+              Vaga Técnica
             </div>
 
             <h1
               className="font-['Space_Grotesk'] text-2xl lg:text-6xl leading-[1.15] text-(--cream) font-black text-center lg:text-left"
               style={{ animation: 'fadeInUp 1s ease-out 0.2s both' }}
             >
-              Seja o mais novo Líder de <br />
-              Operações Comerciais no <br />
-              mercado de precatório
+              Desenvolvedor de <br />
+              Automações & IA
             </h1>
 
             <p
@@ -40,10 +39,9 @@ export function HeroSection() {
               style={{ animation: 'fadeInUp 1s ease-out 0.4s both' }}
             >
               Um mercado bilionário, pouco profissionalizado e em plena
-              transformação digital. A Ativos lidera essa mudança — e você pode
-              construir a operação de Inbound & Outbound que vai escalar junto
-              com o setor. Esta é sua oportunidade de estar no lado certo dessa
-              revolução.
+              transformação digital. A Ativos lidera essa mudança — e precisa de
+              quem construa as automações, integrações e soluções com IA que
+              fazem a operação escalar.
             </p>
           </div>
         </div>

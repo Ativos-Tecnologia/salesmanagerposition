@@ -6,28 +6,21 @@ import type {
   CompetencyResponse,
 } from '../types/application';
 
-const STORAGE_KEY = 'ativos_application_form';
-const TOTAL_STEPS = 5;
+const STORAGE_KEY = 'ativos_application_form_v2';
+const TOTAL_STEPS = 4;
 
 const initialFormData: ApplicationFormData = {
-  step0: { accepted: false },
-  step1: { accepted: false, missionReflection: '' },
-  step2: {
-    outcomes: {
-      playbook: { accepted: false, comment: '' },
-      teamRestructure: { accepted: false, comment: '' },
-      operationalDiscipline: { accepted: false, comment: '' },
-      highPerformance: { accepted: false, comment: '' },
-      barRaiser: { accepted: false, comment: '' },
-      accountability: { accepted: false, comment: '' },
-      conversion: { accepted: false, comment: '' },
-      ai: { accepted: false, comment: '' },
-    },
+  step0: {
+    accepted: false,
+    missionMotivation: '',
   },
-  step3: {
+  step1: {
+    outcomes: [],
+  },
+  step2: {
     competencies: [],
   },
-  step4: {
+  step3: {
     personalInfo: {
       fullName: '',
       cpf: '',
@@ -39,11 +32,11 @@ const initialFormData: ApplicationFormData = {
       email: '',
       whatsapp: '',
     },
-    socialMedia: [],
+    githubLink: '',
     salaryExpectation: '',
+    availability: '',
     finalNotes: '',
     files: [],
-    photo: null,
   },
   currentStep: 0,
 };
@@ -53,23 +46,19 @@ export function useApplicationForm() {
     useState<ApplicationFormData>(initialFormData);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Carrega dados do localStorage na inicialização
   useEffect(() => {
     const loadData = () => {
       const savedData = localStorage.getItem(STORAGE_KEY);
       if (savedData) {
         try {
           const parsed = JSON.parse(savedData);
-          // Files não são salvos no localStorage, apenas carregar os outros dados
           setFormData({
             ...initialFormData,
             ...parsed,
-            step4: {
-              ...initialFormData.step4,
-              ...parsed.step4,
-              socialMedia: parsed.step4?.socialMedia || [],
-              files: [], // Sempre iniciar sem arquivos
-              photo: null, // Sempre iniciar sem foto
+            step3: {
+              ...initialFormData.step3,
+              ...parsed.step3,
+              files: [],
             },
           });
         } catch (error) {
@@ -82,100 +71,69 @@ export function useApplicationForm() {
     loadData();
   }, []);
 
-  // Salva dados no localStorage sempre que houver mudança
   useEffect(() => {
     if (!isLoading) {
-      const dataToSave = { ...formData };
-      // Arquivos não são salvos no localStorage (objetos File não são serializáveis)
-      // Salvar apenas metadados se necessário
-      const step4ToSave = {
-        ...dataToSave.step4,
-        photo: null, // Não salvar foto no localStorage
-        files: [], // Não salvar arquivos no localStorage
+      const dataToSave = {
+        ...formData,
+        step3: {
+          ...formData.step3,
+          files: [],
+        },
       };
-
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({
-          ...dataToSave,
-          step4: step4ToSave,
-        })
-      );
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
     }
   }, [formData, isLoading]);
 
-  const updateStep0 = useCallback((accepted: boolean) => {
-    setFormData(prev => ({
-      ...prev,
-      step0: { accepted },
-    }));
-  }, []);
-
-  const updateStep1 = useCallback(
-    (data: { accepted?: boolean; missionReflection?: string }) => {
-      setFormData((prev: ApplicationFormData) => ({
+  const updateStep0 = useCallback(
+    (data: { accepted?: boolean; missionMotivation?: string }) => {
+      setFormData(prev => ({
         ...prev,
-        step1: {
-          ...prev.step1,
-          ...data,
-        },
+        step0: { ...prev.step0, ...data },
       }));
     },
     []
   );
 
   const updateOutcome = useCallback(
-    (
-      outcomeKey: keyof ApplicationFormData['step2']['outcomes'],
-      data: Partial<OutcomeResponse>
-    ) => {
-      setFormData((prev: ApplicationFormData) => ({
-        ...prev,
-        step2: {
-          outcomes: {
-            ...prev.step2.outcomes,
-            [outcomeKey]: {
-              ...prev.step2.outcomes[outcomeKey],
-              ...data,
-            },
-          },
-        },
-      }));
+    (index: number, data: Partial<OutcomeResponse>) => {
+      setFormData(prev => {
+        const outcomes = [...prev.step1.outcomes];
+        const existing = outcomes[index] || { accepted: false, comment: '' };
+        outcomes[index] = { ...existing, ...data };
+        return { ...prev, step1: { outcomes } };
+      });
     },
     []
   );
 
   const updateCompetency = useCallback(
     (index: number, data: Partial<CompetencyResponse>) => {
-      setFormData((prev: ApplicationFormData) => {
-        const competencies = [...prev.step3.competencies];
+      setFormData(prev => {
+        const competencies = [...prev.step2.competencies];
         if (competencies[index]) {
           competencies[index] = { ...competencies[index], ...data };
         } else {
           competencies[index] = { name: '', rating: '', example: '', ...data };
         }
-        return {
-          ...prev,
-          step3: { competencies },
-        };
+        return { ...prev, step2: { competencies } };
       });
     },
     []
   );
 
-  const updateStep4 = useCallback(
-    (data: Partial<ApplicationFormData['step4']>) => {
-      setFormData((prev: ApplicationFormData) => ({
+  const updateStep3 = useCallback(
+    (data: Partial<ApplicationFormData['step3']>) => {
+      setFormData(prev => ({
         ...prev,
-        step4: {
-          ...prev.step4,
+        step3: {
+          ...prev.step3,
           ...data,
           personalInfo: data.personalInfo
-            ? { ...prev.step4.personalInfo, ...data.personalInfo }
-            : prev.step4.personalInfo,
+            ? { ...prev.step3.personalInfo, ...data.personalInfo }
+            : prev.step3.personalInfo,
           contact: data.contact
-            ? { ...prev.step4.contact, ...data.contact }
-            : prev.step4.contact,
+            ? { ...prev.step3.contact, ...data.contact }
+            : prev.step3.contact,
         },
       }));
     },
@@ -183,14 +141,14 @@ export function useApplicationForm() {
   );
 
   const nextStep = useCallback(() => {
-    setFormData((prev: ApplicationFormData) => ({
+    setFormData(prev => ({
       ...prev,
       currentStep: Math.min(prev.currentStep + 1, TOTAL_STEPS),
     }));
   }, []);
 
   const previousStep = useCallback(() => {
-    setFormData((prev: ApplicationFormData) => ({
+    setFormData(prev => ({
       ...prev,
       currentStep: Math.max(prev.currentStep - 1, 0),
     }));
@@ -209,10 +167,9 @@ export function useApplicationForm() {
     formData,
     isLoading,
     updateStep0,
-    updateStep1,
     updateOutcome,
     updateCompetency,
-    updateStep4,
+    updateStep3,
     nextStep,
     previousStep,
     clearForm,
@@ -220,4 +177,3 @@ export function useApplicationForm() {
     totalSteps: TOTAL_STEPS,
   };
 }
-
