@@ -97,7 +97,7 @@ export function ApplicationDetailPage() {
         setApplication(appData);
 
         if (appData.documents && appData.documents.length > 0) {
-          const urls = await getFileUrls(appData.documents);
+          const urls = await getFileUrls(appData.documents, appData.id);
           setFileUrls(urls);
         }
       }

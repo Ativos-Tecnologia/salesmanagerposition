@@ -1,6 +1,87 @@
 import { supabase, supabasePublic } from '../lib/supabase';
 import type { ApplicationFormData } from '../types/application';
 
+const STORAGE_BUCKET = 'files-sales-manager';
+
+function normalizeStoredFilePath(filePath: string): string {
+  const trimmed = filePath.trim();
+  if (!trimmed) return '';
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    try {
+      const url = new URL(trimmed);
+      const publicPrefix = `/storage/v1/object/public/${STORAGE_BUCKET}/`;
+      const signedPrefix = `/storage/v1/object/sign/${STORAGE_BUCKET}/`;
+
+      if (url.pathname.includes(publicPrefix)) {
+        return decodeURIComponent(url.pathname.split(publicPrefix)[1] || '');
+      }
+
+      if (url.pathname.includes(signedPrefix)) {
+        return decodeURIComponent(url.pathname.split(signedPrefix)[1] || '');
+      }
+    } catch {
+      return trimmed;
+    }
+  }
+
+  if (trimmed.startsWith(`${STORAGE_BUCKET}/`)) {
+    return trimmed.slice(STORAGE_BUCKET.length + 1);
+  }
+
+  return trimmed.replace(/^\/+/, '');
+}
+
+function sanitizeFileName(fileName: string): string {
+  return fileName.replace(/[^a-zA-Z0-9.-]/g, '_');
+}
+
+function getFileNameFromPath(filePath: string): string {
+  const normalized = normalizeStoredFilePath(filePath);
+  return normalized.split('/').pop() || normalized;
+}
+
+async function resolveFilePathInApplicationFolder(
+  applicationId: string,
+  filePathOrName: string
+): Promise<string | null> {
+  const targetName = getFileNameFromPath(filePathOrName);
+  if (!targetName) return null;
+
+  const { data, error } = await supabase.storage
+    .from(STORAGE_BUCKET)
+    .list(applicationId, {
+      limit: 100,
+      offset: 0,
+      sortBy: { column: 'name', order: 'desc' },
+    });
+
+  if (error || !data?.length) {
+    return null;
+  }
+
+  const sanitizedTarget = sanitizeFileName(targetName);
+
+  const matched = data.find(item => {
+    const itemName = item.name;
+    const withoutTimestamp = itemName.includes('_')
+      ? itemName.substring(itemName.indexOf('_') + 1)
+      : itemName;
+
+    return (
+      itemName === targetName ||
+      withoutTimestamp === targetName ||
+      withoutTimestamp === sanitizedTarget ||
+      itemName.endsWith(`_${targetName}`) ||
+      itemName.endsWith(`_${sanitizedTarget}`)
+    );
+  });
+
+  if (!matched) return null;
+
+  return `${applicationId}/${matched.name}`;
+}
+
 /**
  * Transforma os dados do formulário para o formato do banco de dados
  */
@@ -117,7 +198,7 @@ export async function uploadDocuments(
       const filePath = `${applicationId}/${timestamp}_${sanitizedFileName}`;
 
       const { error } = await supabase.storage
-        .from('files-sales-manager')
+        .from(STORAGE_BUCKET)
         .upload(filePath, file, {
           cacheControl: '3600',
           upsert: false,
@@ -147,17 +228,22 @@ export async function uploadDocuments(
  */
 export async function getFileUrl(filePath: string): Promise<string> {
   try {
+    const normalizedPath = normalizeStoredFilePath(filePath);
+    if (!normalizedPath) {
+      return '';
+    }
+
     const { data, error } = await supabase.storage
-      .from('files-sales-manager')
-      .createSignedUrl(filePath, 3600); // URL válida por 1 hora
+      .from(STORAGE_BUCKET)
+      .createSignedUrl(normalizedPath, 3600); // URL válida por 1 hora
 
     if (error) {
-      console.error('Erro ao gerar URL assinada:', error);
-      // Fallback para URL pública (caso o bucket seja público)
-      const { data: publicData } = supabase.storage
-        .from('files-sales-manager')
-        .getPublicUrl(filePath);
-      return publicData.publicUrl;
+      console.error('Erro ao gerar URL assinada:', {
+        error,
+        originalPath: filePath,
+        normalizedPath,
+      });
+      return '';
     }
 
     return data.signedUrl;
@@ -170,8 +256,39 @@ export async function getFileUrl(filePath: string): Promise<string> {
 /**
  * Obtém URLs assinadas de múltiplos arquivos
  */
-export async function getFileUrls(filePaths: string[]): Promise<string[]> {
-  const urlPromises = filePaths.map(path => getFileUrl(path));
+export async function getFileUrls(
+  filePaths: string[],
+  applicationId?: string
+): Promise<string[]> {
+  const urlPromises = filePaths.map(async path => {
+    const directUrl = await getFileUrl(path);
+    if (directUrl) return directUrl;
+
+    const normalizedPath = normalizeStoredFilePath(path);
+    if (!normalizedPath) return '';
+
+    const [folderFromPath] = normalizedPath.split('/');
+    const ownerFolder =
+      folderFromPath && folderFromPath !== normalizedPath
+        ? folderFromPath
+        : applicationId;
+
+    if (!ownerFolder) {
+      return '';
+    }
+
+    const resolvedPath = await resolveFilePathInApplicationFolder(
+      ownerFolder,
+      normalizedPath
+    );
+
+    if (!resolvedPath) {
+      return '';
+    }
+
+    return await getFileUrl(resolvedPath);
+  });
+
   return await Promise.all(urlPromises);
 }
 
