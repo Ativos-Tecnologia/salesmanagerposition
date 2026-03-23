@@ -346,13 +346,34 @@ export async function getApplicationById(id: string) {
 }
 
 /**
- * Atualiza o status de uma aplicação
+ * Atualiza o status de uma aplicação.
+ * Ao sair de "rejected", limpa `rejection_observation`.
+ * Ao definir "rejected", envie `rejectionObservation` (texto da observação).
  */
-export async function updateApplicationStatus(id: string, status: string) {
+export async function updateApplicationStatus(
+  id: string,
+  status: string,
+  rejectionObservation?: string | null
+) {
   try {
+    const payload: Record<string, unknown> = {
+      status,
+      updated_at: new Date().toISOString(),
+    };
+
+    if (status === 'rejected') {
+      const trimmed =
+        typeof rejectionObservation === 'string'
+          ? rejectionObservation.trim()
+          : '';
+      payload.rejection_observation = trimmed.length > 0 ? trimmed : null;
+    } else {
+      payload.rejection_observation = null;
+    }
+
     const { data, error } = await supabase
       .from('applications')
-      .update({ status, updated_at: new Date().toISOString() })
+      .update(payload)
       .eq('id', id)
       .select()
       .single();
@@ -365,6 +386,40 @@ export async function updateApplicationStatus(id: string, status: string) {
     return { success: true, data };
   } catch (error) {
     console.error('Erro ao atualizar status:', error);
+    return { success: false, error };
+  }
+}
+
+/**
+ * Atualiza apenas a observação de rejeição (candidatura já rejeitada).
+ */
+export async function updateApplicationRejectionObservation(
+  id: string,
+  rejectionObservation: string | null
+) {
+  try {
+    const trimmed =
+      typeof rejectionObservation === 'string'
+        ? rejectionObservation.trim()
+        : '';
+    const { data, error } = await supabase
+      .from('applications')
+      .update({
+        rejection_observation: trimmed.length > 0 ? trimmed : null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Erro ao atualizar observação de rejeição:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Erro ao atualizar observação de rejeição:', error);
     return { success: false, error };
   }
 }

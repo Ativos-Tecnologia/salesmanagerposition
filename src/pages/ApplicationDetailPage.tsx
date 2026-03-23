@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import {
   getApplicationById,
   updateApplicationStatus,
+  updateApplicationRejectionObservation,
   getFileUrls,
 } from '../service/api';
 import { Button } from '../components/ui/button';
@@ -14,6 +15,15 @@ import {
   CardHeader,
   CardTitle,
 } from '../components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '../components/ui/dialog';
+import { Label } from '../components/ui/label';
 
 interface OutcomeItem {
   accepted: boolean;
@@ -41,6 +51,7 @@ interface ApplicationDetail {
   final_notes: string | null;
   mission_motivation: string;
   status: string;
+  rejection_observation: string | null;
   created_at: string;
   documents: string[];
   outcomes: OutcomeItem[];
@@ -81,6 +92,12 @@ export function ApplicationDetailPage() {
   );
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [rejectObservationDraft, setRejectObservationDraft] = useState('');
+  const [rejectModalError, setRejectModalError] = useState<string | null>(null);
+  const [rejectionEditing, setRejectionEditing] = useState(false);
+  const [rejectionEditDraft, setRejectionEditDraft] = useState('');
+  const [isSavingRejectionNote, setIsSavingRejectionNote] = useState(false);
   const [fileUrls, setFileUrls] = useState<string[]>([]);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
@@ -94,7 +111,10 @@ export function ApplicationDetailPage() {
 
       if (result.success && result.data) {
         const appData = result.data as ApplicationDetail;
-        setApplication(appData);
+        setApplication({
+          ...appData,
+          rejection_observation: appData.rejection_observation ?? null,
+        });
 
         if (appData.documents && appData.documents.length > 0) {
           const urls = await getFileUrls(appData.documents, appData.id);
@@ -108,14 +128,102 @@ export function ApplicationDetailPage() {
     if (id) loadApplication();
   }, [id]);
 
+  function openRejectDialog() {
+    setRejectObservationDraft('');
+    setRejectModalError(null);
+    setRejectDialogOpen(true);
+  }
+
+  async function handleConfirmReject() {
+    if (!id) return;
+    const trimmed = rejectObservationDraft.trim();
+    if (!trimmed) {
+      setRejectModalError('Descreva o motivo da rejeição antes de confirmar.');
+      return;
+    }
+    setRejectModalError(null);
+    setIsUpdating(true);
+    const result = await updateApplicationStatus(id, 'rejected', trimmed);
+    if (result.success && result.data) {
+      const row = result.data as ApplicationDetail;
+      setApplication(prev =>
+        prev
+          ? {
+              ...prev,
+              status: row.status ?? 'rejected',
+              rejection_observation:
+                row.rejection_observation ?? trimmed ?? null,
+            }
+          : null
+      );
+      setRejectDialogOpen(false);
+      setRejectObservationDraft('');
+    }
+    setIsUpdating(false);
+  }
+
   async function handleUpdateStatus(newStatus: string) {
     if (!id) return;
     setIsUpdating(true);
     const result = await updateApplicationStatus(id, newStatus);
-    if (result.success) {
-      setApplication(prev => (prev ? { ...prev, status: newStatus } : null));
+    if (result.success && result.data) {
+      const row = result.data as ApplicationDetail;
+      setApplication(prev =>
+        prev
+          ? {
+              ...prev,
+              status: row.status ?? newStatus,
+              rejection_observation:
+                newStatus === 'rejected'
+                  ? (row.rejection_observation ?? prev.rejection_observation)
+                  : null,
+            }
+          : null
+      );
+    } else if (result.success) {
+      setApplication(prev =>
+        prev
+          ? {
+              ...prev,
+              status: newStatus,
+              rejection_observation: newStatus === 'rejected' ? prev.rejection_observation : null,
+            }
+          : null
+      );
     }
     setIsUpdating(false);
+  }
+
+  function startEditingRejectionNote() {
+    setRejectionEditDraft(application?.rejection_observation ?? '');
+    setRejectionEditing(true);
+  }
+
+  function cancelEditingRejectionNote() {
+    setRejectionEditing(false);
+    setRejectionEditDraft('');
+  }
+
+  async function saveRejectionNote() {
+    if (!id || !application) return;
+    setIsSavingRejectionNote(true);
+    const result = await updateApplicationRejectionObservation(
+      id,
+      rejectionEditDraft.trim() || null
+    );
+    if (result.success && result.data) {
+      const row = result.data as ApplicationDetail;
+      setApplication(prev =>
+        prev
+          ? {
+              ...prev,
+              rejection_observation: row.rejection_observation ?? null,
+            }
+          : null
+      );
+      setRejectionEditing(false);
+    }
+    setIsSavingRejectionNote(false);
   }
 
   async function handleSignOut() {
@@ -215,8 +323,8 @@ export function ApplicationDetailPage() {
                 </Button>
 
                 <Button
-                  onClick={() => handleUpdateStatus('rejected')}
-                  disabled={isUpdating}
+                  onClick={openRejectDialog}
+                  disabled={isUpdating || application.status === 'rejected'}
                   variant={
                     application.status === 'rejected'
                       ? 'destructive'
@@ -248,6 +356,126 @@ export function ApplicationDetailPage() {
             </div>
           </CardHeader>
         </Card>
+
+        {application.status === 'rejected' && (
+          <Card className="mb-6 border-red-200 bg-linear-to-br from-red-50/90 to-white shadow-sm">
+            <CardHeader className="pb-3">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <CardTitle className="text-lg text-red-900">
+                    Motivo da rejeição
+                  </CardTitle>
+                  <CardDescription>
+                    Registro interno do porquê esta candidatura foi rejeitada.
+                  </CardDescription>
+                </div>
+                {!rejectionEditing && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="border-red-200 text-red-800 hover:bg-red-100"
+                    onClick={startEditingRejectionNote}
+                  >
+                    Editar
+                  </Button>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent>
+              {rejectionEditing ? (
+                <div className="space-y-3">
+                  <Label htmlFor="rejection-edit">Observação</Label>
+                  <textarea
+                    id="rejection-edit"
+                    value={rejectionEditDraft}
+                    onChange={e => setRejectionEditDraft(e.target.value)}
+                    rows={5}
+                    className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="Descreva o motivo da rejeição..."
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      disabled={isSavingRejectionNote}
+                      className="bg-red-600 text-white hover:bg-red-700"
+                      onClick={saveRejectionNote}
+                    >
+                      {isSavingRejectionNote ? 'Salvando...' : 'Salvar'}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={isSavingRejectionNote}
+                      onClick={cancelEditingRejectionNote}
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+                </div>
+              ) : application.rejection_observation ? (
+                <p className="whitespace-pre-wrap text-sm leading-relaxed text-slate-800">
+                  {application.rejection_observation}
+                </p>
+              ) : (
+                <p className="text-sm italic text-slate-500">
+                  Nenhuma observação registrada. Use &quot;Editar&quot; para
+                  adicionar.
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        <Dialog open={rejectDialogOpen} onOpenChange={setRejectDialogOpen}>
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Rejeitar candidatura</DialogTitle>
+              <DialogDescription>
+                Informe o motivo da rejeição. Esse texto ficará visível nos
+                detalhes desta candidatura para consulta futura.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-2 py-2">
+              <Label htmlFor="reject-reason">Observação (obrigatória)</Label>
+              <textarea
+                id="reject-reason"
+                value={rejectObservationDraft}
+                onChange={e => {
+                  setRejectObservationDraft(e.target.value);
+                  if (rejectModalError) setRejectModalError(null);
+                }}
+                rows={5}
+                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
+                placeholder="Ex.: Perfil alinhado ao remoto; vaga exige presença integral em Recife."
+                disabled={isUpdating}
+              />
+              {rejectModalError && (
+                <p className="text-sm text-red-600">{rejectModalError}</p>
+              )}
+            </div>
+            <DialogFooter className="gap-2 sm:gap-0">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setRejectDialogOpen(false)}
+                disabled={isUpdating}
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="button"
+                className="bg-red-600 text-white hover:bg-red-700"
+                onClick={handleConfirmReject}
+                disabled={isUpdating}
+              >
+                {isUpdating ? 'Salvando...' : 'Confirmar rejeição'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Coluna Principal */}
