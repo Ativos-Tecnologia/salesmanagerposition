@@ -4,6 +4,7 @@ import { useModal } from '../hooks/useModal';
 import { Modal } from '../components/form-position/Modal';
 import { ProgressBar } from '../components/form-position/ProgressBar';
 import { Step0 } from '../components/form-position/steps/Step0';
+import { StepMission } from '../components/form-position/steps/StepMission';
 import { Step1 } from '../components/form-position/steps/Step1';
 import { Step2 } from '../components/form-position/steps/Step2';
 import { Step3 } from '../components/form-position/steps/Step3';
@@ -98,12 +99,12 @@ export function ApplicationPage() {
           Ativos
         </div>
         <h1 className="text-4xl md:text-5xl font-extrabold leading-[1.1] text-[#0a0e27] mb-3">
-          Desenvolvedor de
+          Formulário de Aplicação à Vaga de
           <br />
-          Automações & IA
+          Diretor de Marketing
         </h1>
         <div className="text-2xl font-medium text-[#546e7a]">
-          n8n · Scraping · APIs · Integração com IA
+          (Chief Marketing Officer / Growth Leader)
         </div>
       </div>
 
@@ -123,7 +124,6 @@ export function ApplicationPage() {
               {formData.currentStep === 0 && (
                 <Step0
                   accepted={formData.step0.accepted}
-                  missionMotivation={formData.step0.missionMotivation}
                   onStep0Change={updateStep0}
                   onNext={nextStep}
                   showModal={showModal}
@@ -131,6 +131,17 @@ export function ApplicationPage() {
               )}
 
               {formData.currentStep === 1 && (
+                <StepMission
+                  missionAccepted={formData.step0.missionAccepted}
+                  missionMotivation={formData.step0.missionMotivation}
+                  onStep0Change={updateStep0}
+                  onNext={nextStep}
+                  onBack={previousStep}
+                  showModal={showModal}
+                />
+              )}
+
+              {formData.currentStep === 2 && (
                 <Step1
                   outcomes={formData.step1.outcomes}
                   onOutcomeChange={updateOutcome}
@@ -140,7 +151,7 @@ export function ApplicationPage() {
                 />
               )}
 
-              {formData.currentStep === 2 && (
+              {formData.currentStep === 3 && (
                 <Step2
                   competencies={formData.step2.competencies}
                   onCompetencyChange={updateCompetency}
@@ -150,7 +161,7 @@ export function ApplicationPage() {
                 />
               )}
 
-              {formData.currentStep === 3 && (
+              {formData.currentStep === 4 && (
                 <Step3
                   data={formData.step3}
                   onDataChange={updateStep3}
