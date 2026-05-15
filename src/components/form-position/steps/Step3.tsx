@@ -31,40 +31,9 @@ interface Step3Props {
 }
 
 const estados = [
-  'AC',
-  'AL',
-  'AP',
-  'AM',
-  'BA',
-  'CE',
-  'DF',
-  'ES',
-  'GO',
-  'MA',
-  'MT',
-  'MS',
-  'MG',
-  'PA',
-  'PB',
-  'PR',
-  'PE',
-  'PI',
-  'RJ',
-  'RN',
-  'RS',
-  'RO',
-  'RR',
-  'SC',
-  'SP',
-  'SE',
-  'TO',
-];
-
-const availabilityOptions = [
-  { value: 'imediata', label: 'Imediata' },
-  { value: '15dias', label: '15 dias' },
-  { value: '30dias', label: '30 dias' },
-  { value: 'outro', label: 'Outro' },
+  'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
+  'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
+  'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
 ];
 
 export function Step3({
@@ -157,12 +126,6 @@ export function Step3({
         isValid: validateSalary(data.salaryExpectation),
         message: 'Por favor, informe sua pretensão salarial.',
       },
-      {
-        field: 'availability',
-        elementId: 'availability',
-        isValid: data.availability.length > 0,
-        message: 'Por favor, selecione sua disponibilidade para início.',
-      },
     ];
 
     const failed = rules.find(rule => !rule.isValid);
@@ -188,26 +151,31 @@ export function Step3({
         <div className="font-['Space_Grotesk'] text-[13px] font-semibold tracking-[2px] text-[#3b82f6] mb-2 uppercase">
           Etapa Final
         </div>
-        <h2 className="text-4xl font-bold text-[#0a0e27] mb-2">Seus Dados</h2>
+        <h2 className="text-4xl font-bold text-[#0a0e27] mb-2">Evidências e Conclusão</h2>
       </div>
 
-      {/* GitHub / Portfólio */}
+      {/* Materiais de suporte */}
       <div className="mb-8 p-7 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
         <h3 className="text-2xl font-bold text-[#0a0e27] mb-4">
-          Mostre o que já construiu (opcional)
+          Materiais de Suporte (Opcional)
         </h3>
         <p className="mb-4 text-[#0a0e27]">
-          Se tiver materiais que mostrem seu trabalho, manda aqui: prints de
-          fluxos, links de projetos, screenshots, o que tiver.
+          Se você possui materiais que demonstrem sua capacidade de entregar os outcomes desta função, compartilhe aqui:
         </p>
-
-        <TextField
-          id="github-link"
-          value={data.githubLink}
-          onChange={value => onDataChange({ githubLink: value })}
-          label="Link do GitHub ou portfólio (opcional)"
-          placeholder="https://github.com/seu-usuario"
-        />
+        <ul className="list-none my-4">
+          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
+            Playbooks que você criou
+          </li>
+          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
+            Dashboards e KPIs
+          </li>
+          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
+            Materiais de treinamento
+          </li>
+          <li className="relative pl-6 mb-2 text-[#0a0e27] before:content-['▸'] before:absolute before:left-0 before:text-[#3b82f6] before:font-bold">
+            Casos reais (com dados sensíveis ocultos)
+          </li>
+        </ul>
       </div>
 
       {/* Upload de arquivos */}
@@ -217,16 +185,16 @@ export function Step3({
       >
         <div className="text-5xl mb-4 text-[#3b82f6]">📎</div>
         <p className="font-semibold mb-2 text-[#0a0e27]">
-          Clique para fazer upload
+          Clique para fazer upload de arquivos
         </p>
         <p className="text-[#78909c] text-base">
-          PDF, imagens, ZIP (máx. 10MB cada)
+          PDF, DOCX, XLSX, PPT, PNG, JPG (máx. 10MB cada)
         </p>
         <input
           type="file"
           id="fileInput"
           multiple
-          accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.zip"
+          accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg"
           onChange={handleFileUpload}
           className="hidden"
         />
@@ -353,7 +321,7 @@ export function Step3({
 
       {/* Contato */}
       <div className="mb-8 p-6 bg-linear-to-br from-[#f8f9fa] to-white border-l-4 border-[#3b82f6] rounded-r">
-        <h3 className="text-[22px] font-bold text-[#0a0e27] mb-5">Contato</h3>
+        <h3 className="text-[22px] font-bold text-[#0a0e27] mb-5">Dados de Contato</h3>
 
         <TextField
           id="email"
@@ -383,7 +351,7 @@ export function Step3({
         />
       </div>
 
-      {/* Pretensão e disponibilidade */}
+      {/* Pretensão Salarial */}
       <TextField
         id="salary-expectation"
         value={data.salaryExpectation}
@@ -395,45 +363,20 @@ export function Step3({
         error={errors.salaryExpectation}
       />
 
-      <div className="my-8">
-        <label
-          htmlFor="availability"
-          className="block font-semibold mb-3 text-[#0a0e27] text-lg"
-        >
-          <span className="text-[#3b82f6] font-bold">* </span>Disponibilidade
-          para início
-        </label>
-        <select
-          id="availability"
-          value={data.availability}
-          onChange={e => onDataChange({ availability: e.target.value })}
-          className={`w-full p-4 border-2 ${
-            errors.availability ? 'border-red-600' : 'border-[#e0e7ef]'
-          } rounded font-['Space_Grotesk'] text-[17px] text-[#0a0e27] transition-all bg-white focus:outline-none focus:border-[#3b82f6] cursor-pointer`}
-        >
-          <option value="">Selecione</option>
-          {availabilityOptions.map(opt => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      </div>
-
       <div className="mt-12">
         <TextAreaField
           id="final-notes"
           value={data.finalNotes}
           onChange={value => onDataChange({ finalNotes: value })}
-          label="Quer contar mais alguma coisa que não foi perguntado?"
-          placeholder="Opcional. Fique à vontade."
+          label="Existe algo relevante sobre sua trajetória que não foi perguntado e você considera importante para esta função?"
+          placeholder="Opcional. Compartilhe aqui qualquer informação adicional que considere relevante."
         />
       </div>
 
       <ButtonGroup
         onBack={onBack}
         onNext={handleSubmit}
-        nextLabel="Enviar Aplicação"
+        nextLabel="Concluir Aplicação"
       />
     </div>
   );
