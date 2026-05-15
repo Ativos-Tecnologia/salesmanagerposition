@@ -8,6 +8,8 @@ interface CompetencyBlockProps {
   highlight?: string;
   rating: string;
   example: string;
+  exampleLabel?: string;
+  exampleMinChars?: number;
   onRatingChange: (rating: string) => void;
   onExampleChange: (example: string) => void;
 }
@@ -19,6 +21,8 @@ export function CompetencyBlock({
   highlight,
   rating,
   example,
+  exampleLabel = 'Descreva um exemplo concreto',
+  exampleMinChars = 200,
   onRatingChange,
   onExampleChange,
 }: CompetencyBlockProps) {
@@ -43,11 +47,11 @@ export function CompetencyBlock({
         id={`example-${title}`}
         value={example}
         onChange={onExampleChange}
-        label="Descreva um exemplo concreto"
+        label={exampleLabel}
         placeholder="Descreva uma situação específica..."
         required
-        minChars={200}
-        error={example.length > 0 && example.length < 200}
+        minChars={exampleMinChars}
+        error={example.length > 0 && example.length < exampleMinChars}
       />
     </div>
   );
