@@ -45,11 +45,10 @@ interface ApplicationDetail {
   birth_date: string;
   city: string;
   state: string;
-  github_link: string | null;
   salary_expectation: string;
-  availability: string;
   final_notes: string | null;
   mission_motivation: string;
+  mission_accepted: boolean;
   status: string;
   rejection_observation: string | null;
   created_at: string;
@@ -59,24 +58,21 @@ interface ApplicationDetail {
 }
 
 const outcomeLabels = [
-  'Automações em Produção',
-  'Coleta de Dados Confiável',
-  'IA Integrada a um Processo Real',
-  'Manter o que Construiu',
+  'Diagnóstico e Estratégia GTM',
+  'Reestruturação para Equipe Whole-Brained',
+  'Alinhamento Interfuncional (Fim dos Silos)',
+  'Entrega de Métricas Financeiras e de Crescimento',
+  'Adoção de IA e Eficiência MarTech',
 ];
 
 const competencyLabels: Record<string, string> = {
-  comp1: 'Dono do que Constrói',
-  comp2: 'Autonomia + Comunicação',
-  comp3: 'Resolve Problema de Verdade',
-  comp4: 'Aprende Rápido',
-};
-
-const availabilityLabels: Record<string, string> = {
-  imediata: 'Imediata',
-  '15dias': '15 dias',
-  '30dias': '30 dias',
-  outro: 'Outro',
+  comp1: 'Ownership Radical e Accountability',
+  comp2: 'Fluência Financeira (Rigor Analítico)',
+  comp3: 'Mentalidade Test-and-Learn (Agilidade)',
+  comp4: 'Colaboração e Liderança de Integração',
+  comp5: 'Liderança Transformadora de Pessoas',
+  comp6: 'Proficiência Técnica e Inovação (AI-First)',
+  comp7: 'Foco Obsessivo no Cliente',
 };
 
 const statusConfig: Record<string, { label: string; color: string }> = {
@@ -485,7 +481,7 @@ export function ApplicationDetailPage() {
               <CardHeader>
                 <CardTitle>Motivação para a Vaga</CardTitle>
                 <CardDescription>
-                  Por que essa vaga faz sentido pra você agora?
+                  O que, especificamente, neste desafio faz sentido para você neste momento da sua carreira?
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -544,21 +540,6 @@ export function ApplicationDetailPage() {
                   </p>
                   <p>{application.whatsapp}</p>
                 </div>
-                {application.github_link && (
-                  <div>
-                    <p className="text-sm font-semibold text-slate-500">
-                      GitHub / Portfólio
-                    </p>
-                    <a
-                      href={application.github_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline break-all"
-                    >
-                      {application.github_link}
-                    </a>
-                  </div>
-                )}
               </CardContent>
             </Card>
 
@@ -587,17 +568,7 @@ export function ApplicationDetailPage() {
                         {outcomeLabels[index] ?? `Resultado ${index + 1}`}
                       </p>
                     </div>
-                    {index === 3 ? (
-                      <p
-                        className={`text-sm font-semibold ${
-                          outcome.accepted ? 'text-emerald-600' : 'text-red-600'
-                        }`}
-                      >
-                        {outcome.accepted
-                          ? 'Sim, confirma o compromisso'
-                          : 'Não confirmou'}
-                      </p>
-                    ) : outcome.comment ? (
+                    {outcome.comment ? (
                       <p className="text-sm whitespace-pre-wrap text-slate-600">
                         {outcome.comment}
                       </p>
@@ -665,19 +636,6 @@ export function ApplicationDetailPage() {
               </CardContent>
             </Card>
 
-            {/* Disponibilidade */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Disponibilidade</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-lg font-semibold text-slate-700">
-                  {availabilityLabels[application.availability] ??
-                    application.availability}
-                </p>
-              </CardContent>
-            </Card>
-
             {/* Documentos */}
             {application.documents && application.documents.length > 0 && (
               <Card>
@@ -715,6 +673,29 @@ export function ApplicationDetailPage() {
                 </CardContent>
               </Card>
             )}
+
+            {/* Formulários de Entrevista */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Formulários de Entrevista</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button
+                  onClick={() => navigate(`/admin/applications/${id}/screening`)}
+                  className="w-full"
+                  variant="outline"
+                >
+                  Triagem Inicial
+                </Button>
+                <Button
+                  onClick={() => navigate(`/admin/applications/${id}/interview`)}
+                  className="w-full"
+                  variant="outline"
+                >
+                  Entrevista Principal
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </main>
