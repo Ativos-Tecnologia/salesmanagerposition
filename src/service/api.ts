@@ -89,6 +89,7 @@ function transformFormDataToDatabase(formData: ApplicationFormData) {
   return {
     // Step 0
     step0_accepted: formData.step0.accepted,
+    mission_accepted: formData.step0.missionAccepted,
     mission_motivation: formData.step0.missionMotivation,
 
     // Step 1 - Outcomes (JSONB array)
@@ -109,9 +110,7 @@ function transformFormDataToDatabase(formData: ApplicationFormData) {
     whatsapp: formData.step3.contact.whatsapp,
 
     // Step 3 - Profissional
-    github_link: formData.step3.githubLink || null,
     salary_expectation: formData.step3.salaryExpectation,
-    availability: formData.step3.availability,
     final_notes: formData.step3.finalNotes || null,
     documents: formData.step3.files.map((file: File) => file.name),
 

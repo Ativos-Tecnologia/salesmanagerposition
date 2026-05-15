@@ -7,11 +7,12 @@ import type {
 } from '../types/application';
 
 const STORAGE_KEY = 'ativos_application_form_v2';
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 5;
 
 const initialFormData: ApplicationFormData = {
   step0: {
     accepted: false,
+    missionAccepted: false,
     missionMotivation: '',
   },
   step1: {
@@ -32,9 +33,7 @@ const initialFormData: ApplicationFormData = {
       email: '',
       whatsapp: '',
     },
-    githubLink: '',
     salaryExpectation: '',
-    availability: '',
     finalNotes: '',
     files: [],
   },
@@ -85,7 +84,7 @@ export function useApplicationForm() {
   }, [formData, isLoading]);
 
   const updateStep0 = useCallback(
-    (data: { accepted?: boolean; missionMotivation?: string }) => {
+    (data: { accepted?: boolean; missionAccepted?: boolean; missionMotivation?: string }) => {
       setFormData(prev => ({
         ...prev,
         step0: { ...prev.step0, ...data },

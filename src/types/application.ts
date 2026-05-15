@@ -25,6 +25,7 @@ export interface CompetencyResponse {
 export interface ApplicationFormData {
   step0: {
     accepted: boolean;
+    missionAccepted: boolean;
     missionMotivation: string;
   };
   step1: {
@@ -36,9 +37,7 @@ export interface ApplicationFormData {
   step3: {
     personalInfo: PersonalInfo;
     contact: ContactInfo;
-    githubLink: string;
     salaryExpectation: string;
-    availability: string;
     finalNotes: string;
     files: File[];
   };
