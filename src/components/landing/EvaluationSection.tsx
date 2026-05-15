@@ -1,24 +1,24 @@
-import { Settings, Search, BookOpen, type LucideIcon } from 'lucide-react';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { Settings, Search, BookOpen, type LucideIcon } from "lucide-react";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 const evaluationCriteria = [
   {
     icon: Settings,
-    title: 'Entregas em Produção',
+    title: "Métricas de Negócio",
     description:
-      'Automações, scrapers e integrações funcionando de verdade, usados pelo time no dia a dia.',
+      "Avaliação por CAC, LTV, ROI e receita atribuída. Métrica de vaidade não conta — impacto no P&L conta.",
   },
   {
     icon: Search,
-    title: 'Capacidade de Resolver',
+    title: "Linguagem da Diretoria",
     description:
-      'Quando algo quebra, você investiga, resolve e documenta. Não espera alguém pedir.',
+      "Você entra em reunião de C-level justificando investimento com lógica financeira. Equilibra retorno de curto prazo com construção de marca de longo.",
   },
   {
     icon: BookOpen,
-    title: 'Documentação e Manutenção',
+    title: "Pontes, Não Silos",
     description:
-      'O que você constrói precisa ser entendido e mantido por outros. Código limpo, fluxos claros, zero caixa-preta.',
+      "Alinhamento interfuncional real com Vendas, Produto, Finanças e Tech. A-Players constroem pontes — e essa é uma exigência, não um diferencial.",
   },
 ];
 
@@ -37,7 +37,7 @@ function EvaluationCard({
     <div
       ref={elementRef}
       className={`fade-in ${
-        isVisible ? 'visible' : ''
+        isVisible ? "visible" : ""
       } p-12 pt-12 pb-12 bg-white rounded-2xl border-2 border-(--navy-deep) border-t-8 border-t-[#041293] shadow-[8px_8px_0_rgba(0,30,98,0.08)] transition-all duration-300 hover:shadow-[12px_12px_0_rgba(0,30,98,0.12)] hover:-translate-x-[2px] hover:-translate-y-[2px]`}
     >
       <Icon className="w-12 h-12 mb-6 text-[#041293]" />
@@ -63,7 +63,7 @@ export function EvaluationSection() {
           <h2
             ref={titleRef}
             className={`fade-in ${
-              titleVisible ? 'visible' : ''
+              titleVisible ? "visible" : ""
             } font-['Space_Grotesk'] text-2xl lg:text-4xl font-black text-(--navy-deep) mb-6 relative inline-block after:content-[''] after:absolute after:-bottom-[15px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-[5px] after:bg-(--navy-deep)`}
           >
             Como Avaliamos
@@ -71,7 +71,7 @@ export function EvaluationSection() {
           <p
             ref={subtitleRef}
             className={`fade-in ${
-              subtitleVisible ? 'visible' : ''
+              subtitleVisible ? "visible" : ""
             } text-lg lg:text-2xl text-(--text-faded) w-full mx-auto  leading-[1.8]`}
           >
             Transparência total. Sem surpresa. Sem discurso vazio.
@@ -79,7 +79,7 @@ export function EvaluationSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-12">
-          {evaluationCriteria.map(criteria => (
+          {evaluationCriteria.map((criteria) => (
             <EvaluationCard key={criteria.title} {...criteria} />
           ))}
         </div>

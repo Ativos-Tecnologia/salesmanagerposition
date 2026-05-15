@@ -1,30 +1,30 @@
-import { Landmark } from 'lucide-react';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { Landmark } from "lucide-react";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 const pillars = [
   {
-    number: '1',
-    title: 'Impacto',
+    number: "1",
+    title: "Impacto",
     description:
-      'O que você construir vai rodar em produção e ser usado pelo time inteiro. Nada de projeto que morre na gaveta.',
+      "Você é coproprietário da meta de receita. Cada decisão move o ponteiro — não fica em apresentação de slide.",
   },
   {
-    number: '2',
-    title: 'Autonomia',
+    number: "2",
+    title: "Autonomia",
     description:
-      'Sem microgerenciamento. Você recebe o problema, entende o contexto e resolve. Cobrança por resultado, não por hora.',
+      "Você desenha e executa o GTM de ponta a ponta. Espaço para assumir riscos calculados e ajustar rota com base em dados.",
   },
   {
-    number: '3',
-    title: 'Tecnologia',
+    number: "3",
+    title: "Tecnologia",
     description:
-      'n8n, APIs, scraping, IA, banco de dados. Stack moderna e espaço pra testar ferramentas novas.',
+      "Operação AI-First. Você amplifica o time com IA, automação de marketing e MarTech moderna, lado a lado com Tecnologia.",
   },
   {
-    number: '4',
-    title: 'Crescimento',
+    number: "4",
+    title: "Crescimento",
     description:
-      'Empresa em escala com muito a construir. Quem entrega bem aqui cresce rápido.',
+      "Empresa em escala, com C-level acessível e cadeira na mesa de decisão. Quem entrega aqui, define o próximo capítulo da operação.",
   },
 ];
 
@@ -43,7 +43,7 @@ function PillarCard({
     <div
       ref={elementRef}
       className={`fade-in ${
-        isVisible ? 'visible' : ''
+        isVisible ? "visible" : ""
       } text-center p-12 pt-12 pb-12 bg-white/5 border rounded-2xl border-[#ffffff4b] relative transition-all duration-400 hover:bg-white/10 hover:border-(--cream)/40 hover:-translate-y-2 before:content-[''] before:absolute before:top-0 before:left-0  before:w-1/3 before:mx-auto before:right-0 before:h-[3px] before:bg-[#FFFFFF] before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100 before:rounded-full`}
     >
       <div className="inline-block w-[70px] h-[70px] leading-[70px] bg-white border-[3px] border-[#FFFFFF] rounded-full font-['Space_Grotesk'] text-[2rem] font-black mb-6 text-[#041293]">
@@ -71,7 +71,7 @@ export function PillarsSection() {
           <h2
             ref={titleRef}
             className={`fade-in ${
-              titleVisible ? 'visible' : ''
+              titleVisible ? "visible" : ""
             } font-['Space_Grotesk'] text-2xl lg:text-4xl font-black text-(--cream) `}
           >
             Por Que Trabalhar na Ativos
@@ -80,16 +80,17 @@ export function PillarsSection() {
           <p
             ref={subtitleRef}
             className={`fade-in ${
-              subtitleVisible ? 'visible' : ''
+              subtitleVisible ? "visible" : ""
             } text-lg lg:text-2xl text-[#c8c6bd] max-w-[700px] mx-auto  leading-[1.8]`}
           >
-            Ambiente direto, sem enrolação, com espaço real pra construir.
+            Ambiente direto, com fluência financeira e cadeira na mesa de
+            decisão.
           </p>
           <div className="w-1/2 h-[2px] bg-[#ffffff4b] mx-auto" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 ">
-          {pillars.map(pillar => (
+          {pillars.map((pillar) => (
             <PillarCard key={pillar.number} {...pillar} />
           ))}
         </div>
@@ -97,4 +98,3 @@ export function PillarsSection() {
     </section>
   );
 }
-

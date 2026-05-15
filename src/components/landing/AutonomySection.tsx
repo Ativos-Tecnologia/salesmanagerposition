@@ -1,21 +1,26 @@
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
-import { Grid } from './gridPattern';
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
+import { Grid } from "./gridPattern";
 
 const grid = [
   {
-    title: 'Experiência prática com automações (n8n, Zapier, Make ou similar)',
+    title:
+      "Fluência financeira: você defende investimentos em CAC, LTV e payback na diretoria",
   },
   {
-    title: 'Saber fazer web scraping e lidar com sites que bloqueiam',
+    title:
+      "Track record com Pipeline Gerado, Receita Atribuída e ROI mensurável",
   },
   {
-    title: 'Ter integrado APIs e construído endpoints',
+    title:
+      "Domínio de MarTech: CRM, automação de marketing, analytics e dados unificados",
   },
   {
-    title: 'Saber usar IA (OpenAI, Gemini) dentro de fluxos reais',
+    title:
+      "Mentalidade AI-First — você usa IA para escalar execução, não como discurso",
   },
   {
-    title: 'Conseguir manter o que construiu rodando em produção',
+    title:
+      "Cultura Test-and-Learn: hipótese, dado, ajuste de rota — sem ego no caminho",
   },
 ];
 
@@ -32,7 +37,7 @@ export function AutonomySection() {
           <h2
             ref={titleRef}
             className={`fade-in ${
-              titleVisible ? 'visible' : ''
+              titleVisible ? "visible" : ""
             } font-['Space_Grotesk'] text-2xl lg:text-4xl font-black text-(--navy-deep) `}
           >
             O Que Esperamos de Você
@@ -41,12 +46,13 @@ export function AutonomySection() {
             <div
               ref={introRef}
               className={`fade-in ${
-                introVisible ? 'visible' : ''
+                introVisible ? "visible" : ""
               } text-lg lg:text-2xl text-[#515151] text-center `}
             >
-              <strong>Alguém que já construiu coisas de verdade.</strong> Não
-              precisa ser sênior. Precisa ser alguém que resolve, aprende rápido
-              e não empurra problema pra frente.
+              <strong>Um parceiro estratégico do negócio.</strong> Não
+              procuramos um Guardião da Marca. Procuramos um líder de
+              crescimento que entra na diretoria falando a linguagem do CFO e
+              sai com orçamento aprovado.
             </div>
           </div>
         </div>
@@ -54,7 +60,7 @@ export function AutonomySection() {
         <div className="max-w-[800px] mx-auto">
           <div className=" mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-10 md:gap-10 max-w-7xl mx-auto">
-              {grid.map(feature => (
+              {grid.map((feature) => (
                 <div
                   key={feature.title}
                   className="relative bg-linear-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-6 rounded-3xl overflow-hidden shadow-[5px_5px_0_rgba(0,30,98,0.08)] hover:bg-(--cream) hover:shadow-[8px_8px_0_rgba(0,30,98,0.12)] hover:translate-x-[5px] "
@@ -72,4 +78,3 @@ export function AutonomySection() {
     </section>
   );
 }
-

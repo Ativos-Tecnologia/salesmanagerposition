@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowRight, MapPin, Sparkles } from 'lucide-react';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, MapPin, Sparkles } from "lucide-react";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import {
   Dialog,
   DialogContent,
@@ -9,8 +9,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../ui/dialog';
-import { Button } from '../ui/button';
+} from "../ui/dialog";
+import { Button } from "../ui/button";
 
 export function CTASection() {
   const navigate = useNavigate();
@@ -22,32 +22,32 @@ export function CTASection() {
 
   function handleProceed() {
     setIsDialogOpen(false);
-    navigate('/application');
+    navigate("/application");
   }
 
   return (
     <section className="text-center px-8 py-32 relative overflow-hidden bg-linear-to-t to-[#0f21c5] from-[#040E6A] text-(--cream)">
-      {' '}
+      {" "}
       <div className="max-w-7xl mx-auto relative z-10 flex flex-col items-center justify-center gap-10 ">
         <h2
           ref={titleRef}
           className={`fade-in ${
-            titleVisible ? 'visible' : ''
+            titleVisible ? "visible" : ""
           } font-['Space_Grotesk'] text-2xl lg:text-6xl leading-[1.25] font-black`}
         >
-          Construa a Infraestrutura
-          <br /> Inteligente da Ativos
+          Construa o Motor de
+          <br /> Crescimento da Ativos
         </h2>
         <div className="w-1/3 h-[2px] bg-[#ffffff4b] mx-auto" />
         <p
           ref={quoteRef}
           className={`fade-in ${
-            quoteVisible ? 'visible' : ''
+            quoteVisible ? "visible" : ""
           } text-lg lg:text-2xl italic max-w-5xl mx-auto text-[#e8e6dd] leading-[1.7]`}
         >
-          Se você já construiu automações, scrapers e integrações que rodam de
-          verdade, esse é o lugar certo. Mostre o que já fez e venha construir
-          com a gente.
+          Se você já executou GTMs que moveram a agulha da receita e se você
+          entende de métricas do mundo digital esse é o lugar certo. Mostre seu
+          track record e venha construir o próximo capítulo com a gente.
         </p>
 
         <button
@@ -113,7 +113,7 @@ export function CTASection() {
               </p>
               <DialogDescription asChild>
                 <p className="mt-3 text-pretty text-[15px] leading-[1.65] text-[#4a4a4a] sm:text-[16px]">
-                  Atenção, a vaga é{' '}
+                  Atenção, a vaga é{" "}
                   <span className="font-semibold text-[#040E6A]">
                     presencial no Município do Recife/PE
                   </span>

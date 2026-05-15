@@ -1,18 +1,18 @@
-import { OctagonAlert, X } from 'lucide-react';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { OctagonAlert, X } from "lucide-react";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 const dealbreakers = [
-  'Você só programa com tutorial aberto do lado',
-  'Você não gosta de manter o que construiu',
-  'Você precisa que alguém diga cada passo do que fazer',
-  'Você acha que IA é só ChatGPT no navegador',
+  "Sua bússola são curtidas, alcance e prêmios — não receita",
+  "Você prefere o conforto do silo ao desconforto de derrubá-los",
+  "Você espera briefing detalhado antes de operar",
+  "Você não fala CAC, LTV ou ROI quando o conselho pergunta",
 ];
 
 function DealBreakerItem({ text }: { text: string }) {
   const { elementRef, isVisible } = useScrollAnimation();
 
   return (
-    <div ref={elementRef} className={`fade-in ${isVisible ? 'visible' : ''} `}>
+    <div ref={elementRef} className={`fade-in ${isVisible ? "visible" : ""} `}>
       <div className="flex justify-center gap-8 items-center  ">
         <X size={30} className="text-[#ffffff] size-16 lg:size-10" />
         <p className="text-lg lg:text-xl leading-[1.6]">{text}</p>
@@ -52,7 +52,7 @@ export function DealbreakersSection() {
             <h2
               ref={titleRef}
               className={`fade-in ${
-                titleVisible ? 'visible' : ''
+                titleVisible ? "visible" : ""
               } font-['Space_Grotesk'] text-2xl lg:text-4xl font-black text-(--cream) relative inline-block after:content-[''] after:absolute after:-bottom-[15px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-[2px] after:bg-[#ffffff4b]`}
             >
               Esta Vaga NÃO É Para Você Se...
@@ -60,7 +60,7 @@ export function DealbreakersSection() {
             <p
               ref={subtitleRef}
               className={`fade-in ${
-                subtitleVisible ? 'visible' : ''
+                subtitleVisible ? "visible" : ""
               } text-lg lg:text-2xl text-[#FFFFFF] max-w-[700px] mx-auto mt-8 leading-[1.8]`}
             >
               Seja honesto antes de avançar. Esse papel exige perfil específico.
@@ -69,18 +69,19 @@ export function DealbreakersSection() {
         </div>
 
         <div className="border-2 border-border rounded-2xl p-10 max-w-7xl mx-auto flex flex-col items-start justify-center gap-8">
-          {dealbreakers.map(item => (
+          {dealbreakers.map((item) => (
             <DealBreakerItem key={item} text={item} />
           ))}
         </div>
         <div
           ref={warningRef}
           className={`fade-in ${
-            warningVisible ? 'visible' : ''
+            warningVisible ? "visible" : ""
           } p-4 bg-white border rounded-full border-(--navy-deep) border-l-4 border-l-[#000000] shadow-[8px_8px_0_rgba(0,30,98,0.1)] transition-all duration-400 relative hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0_rgba(0,30,98,0.15)]`}
         >
           <h3 className="font-['Space_Grotesk'] text-lg lg:text-2xl text-center lg:text-left text-[#C02626] font-bold p-2">
-            👉 Essa vaga é para quem constrói, não para quem só estuda.
+            👉 Essa vaga é para quem move receita, não para quem só zela pela
+            marca.
           </h3>
         </div>
       </div>

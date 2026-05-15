@@ -1,6 +1,5 @@
 import ParticlesComponent from "./particles-bg";
 
-
 export function HeroSection() {
   return (
     <section className="min-h-screen px-4 md:px-8 relative overflow-hidden">
@@ -21,27 +20,27 @@ export function HeroSection() {
           <div className="max-w-7xl flex flex-col items-center lg:items-start justify-center gap-6 z-10">
             <div
               className="px-4 py-2 rounded-full text-(--cream) font-['Space_Grotesk'] text-sm font-thin border border-(--cream)"
-              style={{ animation: 'fadeInDown 1s ease-out' }}
+              style={{ animation: "fadeInDown 1s ease-out" }}
             >
-              Vaga Técnica
+              Liderança Executiva
             </div>
 
             <h1
               className="font-['Space_Grotesk'] text-2xl lg:text-6xl leading-[1.15] text-(--cream) font-black text-center lg:text-left"
-              style={{ animation: 'fadeInUp 1s ease-out 0.2s both' }}
+              style={{ animation: "fadeInUp 1s ease-out 0.2s both" }}
             >
-              Desenvolvedor de <br />
-              Automações & IA
+              Arquiteto de <br />
+              Crescimento
             </h1>
 
             <p
               className="text-base lg:text-lg text-[#e8e6dd] max-w-[850px] mx-auto leading-[1.7] text-center lg:text-left"
-              style={{ animation: 'fadeInUp 1s ease-out 0.4s both' }}
+              style={{ animation: "fadeInUp 1s ease-out 0.4s both" }}
             >
-              Um mercado bilionário, pouco profissionalizado e em plena
-              transformação digital. A Ativos lidera essa mudança — e precisa de
-              quem construa as automações, integrações e soluções com IA que
-              fazem a operação escalar.
+              Um mercado bilionário em plena reconfiguração. A Ativos lidera a
+              transformação — e busca quem transforme marketing em motor de
+              receita, conectando sinais de mercado à agenda de crescimento da
+              companhia.
             </p>
           </div>
         </div>
