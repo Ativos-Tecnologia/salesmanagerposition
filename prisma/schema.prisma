@@ -29,8 +29,9 @@ model Application {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
 
   // Step 0: Aceitação + Motivação
-  step0Accepted     Boolean @map("step0_accepted")
-  missionMotivation String  @map("mission_motivation") @db.Text
+  step0Accepted      Boolean @map("step0_accepted")
+  missionAccepted    Boolean @default(false) @map("mission_accepted")
+  missionMotivation  String  @map("mission_motivation") @db.Text
 
   // Step 1: 4 Outcomes como JSONB
   // [{accepted: bool, comment: string}, ...]
@@ -54,11 +55,17 @@ model Application {
   // Profissional
   githubLink        String? @map("github_link")
   salaryExpectation String  @map("salary_expectation")
-  availability      String
+  availability      String?
   finalNotes        String? @map("final_notes") @db.Text
 
   // Arquivos
   documents String[] @default([])
+
+  // Formulários de entrevista (preenchidos pelo admin)
+  screeningData        Json?    @map("screening_data") @db.JsonB
+  screeningCompletedAt DateTime? @map("screening_completed_at")
+  interviewData        Json?    @map("interview_data") @db.JsonB
+  interviewCompletedAt DateTime? @map("interview_completed_at")
 
   // Metadados
   status               String  @default("pending")
