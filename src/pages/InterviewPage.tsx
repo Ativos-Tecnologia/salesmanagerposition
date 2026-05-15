@@ -8,27 +8,22 @@ import { QuestionBlock } from '../components/form-interview/QuestionBlock';
 import { Button } from '../components/ui/button';
 
 interface InterviewFormData {
-  // Bloco 1: Mergulho Cronológico
   currentlyEmployed: boolean;
-  q1_1: string; // Contratação
-  q1_2: string; // Realizações
-  q1_3: string; // Erros
-  q1_4: string; // Referências
-  q1_5: string; // Motivo saída
-  // Bloco 2: Teste da Realidade
-  q2_1: string; // Números
-  q2_2: string; // Playbook
-  // Bloco 3: Comportamental
-  q3_1: string; // Ownership
-  q3_2: string; // Grit
-  q3_3: string; // Trabalho em Equipe
-  q3_4: string; // Rigor Analítico
-  // Bloco 4: Potencial e Curiosidade
-  q4_1: string; // Aprendizado
-  q4_2: string; // Inspiração
-  q4_3: string; // Receptividade
-  // Bloco 5: Vulnerabilidade
-  q6_1: string; // Risco de demissão
+  q1_1: string;
+  q1_2: string;
+  q1_3: string;
+  q1_4: string;
+  q1_5: string;
+  q2_1: string;
+  q2_2: string;
+  q3_1: string;
+  q3_2: string;
+  q3_3: string;
+  q3_4: string;
+  q4_1: string;
+  q4_2: string;
+  q4_3: string;
+  q6_1: string;
 }
 
 export function InterviewPage() {
@@ -67,16 +62,13 @@ export function InterviewPage() {
     }
   }, [user, loading, navigate]);
 
-  // Buscar dados existentes do formulário
   useEffect(() => {
     const loadExistingData = async () => {
-      // Não recarregar dados se já teve sucesso
       if (showSuccessModal) return;
 
       if (id && user) {
         setIsLoadingData(true);
         try {
-          // Primeiro, tentar carregar do localStorage
           const storageKey = `interview-draft-${id}`;
           const savedDraft = localStorage.getItem(storageKey);
 
@@ -85,18 +77,13 @@ export function InterviewPage() {
             setFormData(draftData);
           }
 
-          // Depois, buscar dados da API (se existirem, sobrescreverão o draft)
           const result = await getInterviewForm(id);
           if (result.success && result.data?.interview_data) {
             setFormData(result.data.interview_data);
-            // Limpar o draft se já existe na API
             localStorage.removeItem(storageKey);
           }
         } catch (error) {
-          console.error(
-            'Nenhum dado de entrevista encontrado ou erro ao carregar:',
-            error
-          );
+          console.error('Nenhum dado de entrevista encontrado ou erro ao carregar:', error);
         } finally {
           setIsLoadingData(false);
           setIsInitialized(true);
@@ -109,7 +96,6 @@ export function InterviewPage() {
     loadExistingData();
   }, [id, user, showSuccessModal]);
 
-  // Salvar dados no localStorage sempre que formData mudar
   useEffect(() => {
     if (id && !showSuccessModal && isInitialized) {
       const storageKey = `interview-draft-${id}`;
@@ -132,14 +118,8 @@ export function InterviewPage() {
     let isValid = true;
 
     Object.keys(formData).forEach(key => {
-      // Skip q1_5 validation if currently employed
-      if (key === 'q1_5' && formData.currentlyEmployed) {
-        return;
-      }
-      // Skip boolean fields
-      if (key === 'currentlyEmployed') {
-        return;
-      }
+      if (key === 'q1_5' && formData.currentlyEmployed) return;
+      if (key === 'currentlyEmployed') return;
       if (!formData[key as keyof InterviewFormData]) {
         newErrors[key] = true;
         isValid = false;
@@ -149,13 +129,8 @@ export function InterviewPage() {
     setErrors(newErrors);
 
     if (!isValid) {
-      const firstErrorElement = document.querySelector(
-        '.border-\\[\\#e53935\\]'
-      );
-      firstErrorElement?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
+      const firstErrorElement = document.querySelector('.border-\\[\\#e53935\\]');
+      firstErrorElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     return isValid;
@@ -176,11 +151,8 @@ export function InterviewPage() {
 
     try {
       await submitInterviewForm(id, formData);
-
-      // Limpar o rascunho do localStorage após envio bem-sucedido
       const storageKey = `interview-draft-${id}`;
       localStorage.removeItem(storageKey);
-
       setShowSuccessModal(true);
     } catch (error) {
       console.error('Erro ao enviar entrevista:', error);
@@ -229,9 +201,10 @@ export function InterviewPage() {
           </p>
           <p className="max-w-175 mx-auto text-[18px] text-[#0a0e27] leading-relaxed">
             A entrevista principal não é uma conversa casual; é uma{' '}
-            <strong>investigação forense</strong> sobre como o candidato pensa e
-            age. O objetivo é encontrar evidências de que o comportamento
-            passado dele é o melhor preditor do sucesso futuro na sua empresa.
+            <strong>investigação forense</strong> sobre como o executivo de marketing pensa, age e
+            analisa dados. O objetivo é encontrar evidências de que o candidato é um{' '}
+            <strong>Arquiteto de Crescimento</strong> e não apenas um gestor focado em estética.
+            Comportamento passado e entrega de ROI real são os melhores preditores do sucesso futuro.
           </p>
         </header>
 
@@ -245,9 +218,8 @@ export function InterviewPage() {
           >
             <InfoBlock title="Instruções:">
               <p>
-                Para cada uma das últimas posições que o candidato ocupou
-                (geralmente nos últimos 10 anos), faça as mesmas cinco perguntas
-                básicas abaixo.
+                Para cada uma das últimas posições de <strong>liderança de marketing</strong> que o
+                candidato ocupou nos últimos 10 anos, faça as cinco perguntas básicas abaixo.
               </p>
             </InfoBlock>
 
@@ -260,9 +232,9 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> Verifica se o candidato tinha
-                  clareza sobre sua missão e se ela estava alinhada com os
-                  objetivos da empresa anterior.
+                  <strong>Por quê:</strong> Verifica se o candidato tinha clareza sobre sua missão e
+                  se a via como um papel puramente criativo ou como um{' '}
+                  <strong>motor de crescimento</strong> alinhado aos objetivos da empresa.
                 </p>
               </InfoBlock>
             </QuestionBlock>
@@ -277,8 +249,10 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> A-Players tendem a focar em
-                  resultados mensuráveis (outcomes) e não apenas em tarefas.
+                  <strong>Por quê:</strong> A-Players traduzem realizações em{' '}
+                  <strong>impacto no negócio</strong>. Se o candidato focar apenas em métricas de
+                  vaidade (prêmios, likes, rebrandings) e não em outcomes (ROI, redução de CAC,
+                  aumento de LTV, pipeline gerado), é um forte sinal de alerta.
                 </p>
               </InfoBlock>
             </QuestionBlock>
@@ -293,15 +267,15 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> Avalia a humildade e a capacidade de
-                  aprendizado. Candidatos que não assumem erros ou culpam o
-                  mercado/chefia são "red flags" (sinais de alerta).
+                  <strong>Por quê:</strong> Em marketing, campanhas falham. Avalia a autoconsciência
+                  e o <em>ownership</em>. Candidatos que culpam o Produto, o CEO, Vendas ou o mercado
+                  por campanhas malsucedidas reprovam neste quesito.
                 </p>
               </InfoBlock>
             </QuestionBlock>
 
             <QuestionBlock
-              label="4. Quem foram as pessoas com quem você trabalhou e o que elas diriam sobre sua performance?"
+              label="4. Quem foram as pessoas com quem você trabalhou (CFO, CTO, Head de Vendas) e o que elas diriam sobre sua performance e colaboração?"
               id="q1_4"
               value={formData.q1_4}
               onChange={value => handleFieldChange('q1_4', value)}
@@ -310,10 +284,11 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> Prepara o terreno para a técnica
-                  TORC (Threat of Reference Check). Isso força o candidato a ser
-                  honesto, pois ele sabe que você falará com essas pessoas
-                  depois.
+                  <strong>Por quê:</strong> Prepara o terreno para a técnica{' '}
+                  <strong>TORC</strong> (Threat of Reference Check). Força a honestidade e avalia
+                  especificamente a capacidade do candidato de{' '}
+                  <strong>destruir silos</strong> e operar interfuncionalmente com Finanças e
+                  Tecnologia.
                 </p>
               </InfoBlock>
             </QuestionBlock>
@@ -323,9 +298,7 @@ export function InterviewPage() {
                 <input
                   type="checkbox"
                   checked={formData.currentlyEmployed}
-                  onChange={e =>
-                    handleFieldChange('currentlyEmployed', e.target.checked)
-                  }
+                  onChange={e => handleFieldChange('currentlyEmployed', e.target.checked)}
                   className="w-5 h-5 cursor-pointer"
                 />
                 <span className="text-[20px] font-semibold text-[#0a0e27]">
@@ -345,9 +318,9 @@ export function InterviewPage() {
               >
                 <InfoBlock>
                   <p>
-                    <strong>Por quê:</strong> Revela padrões de carreira.
-                    A-Players geralmente "correm em direção a algo melhor" e não
-                    "fogem de algo ruim".
+                    <strong>Por quê:</strong> Pulos rápidos na carreira (12 a 18 meses) em cargos de
+                    Diretoria de Marketing são grandes <em>red flags</em>, pois indicam líderes que
+                    saem antes de verem o real resultado a longo prazo de suas estratégias.
                   </p>
                 </InfoBlock>
               </QuestionBlock>
@@ -358,17 +331,18 @@ export function InterviewPage() {
           <FormSection
             number="Bloco 02"
             title="O Teste da Realidade"
-            subtitle="Números e Playbook"
+            subtitle="Números, Stack e Playbook"
           >
             <InfoBlock title="Objetivo:">
               <p>
-                Estas duas perguntas são cruciais para separar quem "fala bem"
-                de quem "executa bem".
+                Estas duas perguntas separam quem apenas{' '}
+                <strong>"fala de marketing"</strong> de quem executa de forma orientada a dados e
+                domina a arquitetura de canais.
               </p>
             </InfoBlock>
 
             <QuestionBlock
-              label="Números: Me mostre o seu pipeline atual (ou os resultados do seu último projeto)"
+              label="Números Financeiros e Métricas: Me mostre os números da sua operação atual ou do seu último grande projeto. Como você provava o ROI para o CEO/CFO?"
               id="q2_1"
               value={formData.q2_1}
               onChange={value => handleFieldChange('q2_1', value)}
@@ -377,15 +351,16 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> Um A-Player conhece seus números de
-                  cor (taxas de conversão, ticket médio, volume). Hesitação ou
-                  respostas vagas indicam um B ou C-Player.
+                  <strong>Por quê:</strong> Um Diretor de Marketing de alto nível conhece de cor suas
+                  taxas de conversão, <strong>CAC, LTV</strong> e o tempo de <em>payback</em>.
+                  Hesitação, respostas vagas ou tentativa de desviar para "engajamento de marca"
+                  indicam um perfil fraco em negócios.
                 </p>
               </InfoBlock>
             </QuestionBlock>
 
             <QuestionBlock
-              label="O Playbook: Como é uma semana típica na sua função?"
+              label='O Playbook e MarTech: Como você estrutura a sua "stack" de tecnologia (MarTech) e como é a rotina de otimização de campanhas na sua semana típica?'
               id="q2_2"
               value={formData.q2_2}
               onChange={value => handleFieldChange('q2_2', value)}
@@ -394,9 +369,9 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> Revela se o candidato opera com
-                  intenção e processo (calendário bloqueado para prospecção,
-                  gestão de CRM) ou se apenas reage a incêndios.
+                  <strong>Por quê:</strong> Revela se o candidato tem fluência técnica para integrar
+                  ferramentas (CRM, Analytics, IA) e se a equipe opera com testes contínuos (A/B) e
+                  ajustes guiados por dados, ou se operam no achismo.
                 </p>
               </InfoBlock>
             </QuestionBlock>
@@ -409,7 +384,7 @@ export function InterviewPage() {
             subtitle="Método STAR (Situação, Tarefa, Ação e Resultado)"
           >
             <QuestionBlock
-              label="Ownership (Sentimento de Dono): Me conte sobre uma injustiça que você viveu no trabalho"
+              label="Ownership e Alinhamento com Vendas (Fim da Vítima): Me conte sobre uma vez em que Vendas reclamou que os leads gerados pelo Marketing eram ruins, ou que uma campanha fracassou por 'culpa' de outra área. Como você lidou com isso?"
               id="q3_1"
               value={formData.q3_1}
               onChange={value => handleFieldChange('q3_1', value)}
@@ -418,16 +393,16 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> O objetivo é ver se o candidato age
-                  como vítima (dobrando a aposta na reclamação) ou se ele diz:
-                  "Sim, foi ruim, mas eu reconheci que não valia meu tempo
-                  reclamar e foquei em resolver".
+                  <strong>Por quê:</strong> O alinhamento Marketing-Vendas é crítico. O objetivo é
+                  ver se ele age como vítima (dobrando a aposta na guerra de silos) ou se estabelece{' '}
+                  <strong>SLAs claros</strong> e assume a{' '}
+                  <strong>copropriedade da receita</strong>.
                 </p>
               </InfoBlock>
             </QuestionBlock>
 
             <QuestionBlock
-              label="Grit (Resiliência): Fale sobre uma vez em que você quis tanto algo que foi imparável em buscá-lo"
+              label="Agilidade e Pivôs (Resiliência): Fale sobre uma vez em que você teve que pivotar dramaticamente uma estratégia de marketing devido a mudanças no mercado ou baixa performance inicial."
               id="q3_2"
               value={formData.q3_2}
               onChange={value => handleFieldChange('q3_2', value)}
@@ -436,15 +411,15 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> Startups são nebulosas e exigem
-                  pessoas que aguentem a "monotonia do trabalho duro" e
-                  obstáculos constantes.
+                  <strong>Por quê:</strong> O mercado muda rápido. Você quer ouvir uma história de{' '}
+                  <strong>rápida adaptação</strong>, uso de dados para justificar a mudança de rota e
+                  agilidade na comunicação com os stakeholders.
                 </p>
               </InfoBlock>
             </QuestionBlock>
 
             <QuestionBlock
-              label="Trabalho em Equipe: O que seus melhores amigos diriam que são suas maiores qualidades e defeitos?"
+              label="Trabalho em Equipe Interfuncional: O que o CTO (ou CIO) e o CFO da sua última empresa diriam que são suas maiores qualidades e defeitos?"
               id="q3_3"
               value={formData.q3_3}
               onChange={value => handleFieldChange('q3_3', value)}
@@ -453,14 +428,16 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> As pessoas tendem a ser mais
-                  honestas quando respondem através da perspectiva de terceiros.
+                  <strong>Por quê:</strong> Diretores de Marketing modernos precisam ser parceiros
+                  estratégicos dessas duas cadeiras. Se o candidato operava isolado da Tecnologia ou
+                  era visto como um <em>"gastador irresponsável"</em> por Finanças, a resposta
+                  revelará as falhas.
                 </p>
               </InfoBlock>
             </QuestionBlock>
 
             <QuestionBlock
-              label="Rigor Analítico: O que você tentou implementar no passado, mas acabou desistindo — e por quê?"
+              label='Rigor Analítico: Qual foi uma "ideia brilhante" ou campanha que você adorava, mas acabou cancelando/desistindo – e por que, a partir dos dados?'
               id="q3_4"
               value={formData.q3_4}
               onChange={value => handleFieldChange('q3_4', value)}
@@ -469,10 +446,9 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> A-Players são prolíficos e tentam
-                  muitas ideias. Você quer ver se ele tem a maturidade de saber
-                  quando "parar de martelar" algo que não funciona (Rigor
-                  Analítico) ou se ele desiste por falta de resiliência.
+                  <strong>Por quê:</strong> Você quer ver se o líder tem maturidade e rigor para{' '}
+                  <strong>matar campanhas de estimação</strong> ou projetos que não fecham o CAC/LTV,
+                  demonstrando que decide com base em fatos e não em emoção.
                 </p>
               </InfoBlock>
             </QuestionBlock>
@@ -481,18 +457,17 @@ export function InterviewPage() {
           {/* Section 4: Potencial e Curiosidade */}
           <FormSection
             number="Bloco 04"
-            title="Avaliando o Potencial e Curiosidade"
+            title="Avaliando o Potencial e Curiosidade (AI-First)"
           >
             <InfoBlock title="Contexto:">
               <p>
-                Como o mercado muda rápido (especialmente com IA), contratar por
-                potencial é hoje mais importante do que contratar apenas por
-                experiência passada.
+                O marketing moderno exige adoção de novas tecnologias (especialmente Inteligência
+                Artificial). O candidato precisa ser <strong>"Future-ready"</strong>.
               </p>
             </InfoBlock>
 
             <QuestionBlock
-              label="Qual foi a última coisa que você estudou ou se interessou profundamente ('geeked out') por conta própria?"
+              label="Proficiência em Inovação: Como você está aplicando, na prática, ferramentas de Inteligência Artificial (GenAI, análise preditiva) no seu dia a dia ou na operação do seu time de marketing hoje?"
               id="q4_1"
               value={formData.q4_1}
               onChange={value => handleFieldChange('q4_1', value)}
@@ -501,15 +476,16 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> A-Players têm uma curiosidade
-                  insaciável. Se a pessoa não sente necessidade de aprender
-                  detalhes por conta própria, dificilmente terá alto impacto.
+                  <strong>Por quê:</strong> Se o candidato fala de IA apenas de forma teórica ou
+                  superficial, ele está <strong>obsoleto</strong>. Você busca evidências de automação
+                  de processos, escala na geração de conteúdo ou ganho de eficiência real (ROI)
+                  através da IA.
                 </p>
               </InfoBlock>
             </QuestionBlock>
 
             <QuestionBlock
-              label="Em quem você se inspira na sua linha de trabalho e por quê?"
+              label="Referências de Crescimento: Em quem ou em quais marcas você se inspira na sua linha de trabalho para estratégias de Growth e MarTech, e por quê?"
               id="q4_2"
               value={formData.q4_2}
               onChange={value => handleFieldChange('q4_2', value)}
@@ -518,15 +494,15 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> Isso demonstra se existe curiosidade
-                  do candidato em adquirir conhecimento e, portanto, o grau de
-                  sua busca por melhoramento.
+                  <strong>Por quê:</strong> Demonstra de onde o candidato consome conhecimento e se
+                  ele está acompanhando{' '}
+                  <strong>tendências reais de negócios</strong> em vez de apenas estéticas de marca.
                 </p>
               </InfoBlock>
             </QuestionBlock>
 
             <QuestionBlock
-              label="Como você reage quando alguém desafia suas ideias?"
+              label="Gestão de Stakeholders: Como você reage e o que você faz quando a alta liderança (CEO/Conselho) discorda frontalmente da sua estratégia de marketing proposta?"
               id="q4_3"
               value={formData.q4_3}
               onChange={value => handleFieldChange('q4_3', value)}
@@ -535,9 +511,10 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> Avalia a abertura ao aprendizado e a
-                  capacidade de adaptação em ambientes VICA (Voláteis, Incertos,
-                  Complexos e Ambíguos).
+                  <strong>Por quê:</strong> Avalia a inteligência emocional e a capacidade de
+                  persuasão. Um A-Player não briga nem cede cegamente; ele{' '}
+                  <strong>defende a estratégia usando dados e testes de mercado</strong> para provar
+                  seu ponto.
                 </p>
               </InfoBlock>
             </QuestionBlock>
@@ -551,13 +528,13 @@ export function InterviewPage() {
           >
             <InfoBlock title="Leila Hormozi sugere uma pergunta poderosa:">
               <p>
-                Esta pergunta ajuda a entender onde o candidato pode falhar e
-                como ele lida com a realidade.
+                Esta pergunta ajuda a entender onde o candidato pode falhar e como ele lida com a
+                realidade.
               </p>
             </InfoBlock>
 
             <QuestionBlock
-              label="Se este trabalho não desse certo e eu tivesse que te demitir em 60 dias, qual seria o motivo mais provável?"
+              label="Se este trabalho não desse certo e eu tivesse que te demitir em 6 meses porque a máquina de aquisição não tracionou ou os silos entre Marketing e Vendas/Tech não caíram, qual seria o motivo mais provável de você ter falhado aqui?"
               id="q6_1"
               value={formData.q6_1}
               onChange={value => handleFieldChange('q6_1', value)}
@@ -566,12 +543,15 @@ export function InterviewPage() {
             >
               <InfoBlock>
                 <p>
-                  <strong>Por quê:</strong> A-Players têm alta autoconsciência.
-                  Se ele der uma resposta "clichê" (ex: "sou perfeccionista"),
-                  ele está performando. Se ele identificar um risco real de
-                  adaptação (ex: "eu tendo a ir rápido demais antes de entender
-                  todos os detalhes do legado"), você tem um sinal de
-                  honestidade radical.
+                  <strong>Por quê:</strong> Exige alta autoconsciência. Um verdadeiro líder de
+                  marketing reconhecerá gargalos reais de execução (ex:{' '}
+                  <em>"Talvez eu tenha focado muito na marca antes de arrumar o CRM"</em>, ou{' '}
+                  <em>
+                    "Talvez eu não tenha conseguido alinhar a linguagem do meu time criativo com o
+                    rigor do time de dados"
+                  </em>
+                  ). Respostas genéricas mostram que o candidato ainda está no{' '}
+                  <strong>"teatro" da entrevista</strong>.
                 </p>
               </InfoBlock>
             </QuestionBlock>

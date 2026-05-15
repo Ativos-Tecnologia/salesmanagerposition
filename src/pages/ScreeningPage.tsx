@@ -8,11 +8,11 @@ import { QuestionBlock } from '../components/form-interview/QuestionBlock';
 import { Button } from '../components/ui/button';
 
 interface ScreeningFormData {
-  question1: string; // Abertura
-  question2: string; // Placar
-  question3: string; // Playbook
-  question4: string; // Objetivos
-  question5: string; // Logística
+  question1: string;
+  question2: string;
+  question3: string;
+  question4: string;
+  question5: string;
 }
 
 export function ScreeningPage() {
@@ -40,16 +40,13 @@ export function ScreeningPage() {
     }
   }, [user, loading, navigate]);
 
-  // Buscar dados existentes do formulário
   useEffect(() => {
-    // Não recarregar dados se já teve sucesso
     if (showSuccessModal) return;
 
     const loadExistingData = async () => {
       if (id && user) {
         setIsLoadingData(true);
         try {
-          // Primeiro, tentar carregar do localStorage
           const storageKey = `screening-draft-${id}`;
           const savedDraft = localStorage.getItem(storageKey);
 
@@ -58,18 +55,13 @@ export function ScreeningPage() {
             setFormData(draftData);
           }
 
-          // Depois, buscar dados da API (se existirem, sobrescreverão o draft)
           const result = await getScreeningForm(id);
           if (result.success && result.data?.screening_data) {
             setFormData(result.data.screening_data);
-            // Limpar o draft se já existe na API
             localStorage.removeItem(storageKey);
           }
         } catch (error) {
-          console.error(
-            'Nenhum dado de triagem encontrado ou erro ao carregar:',
-            error
-          );
+          console.error('Nenhum dado de triagem encontrado ou erro ao carregar:', error);
         } finally {
           setIsLoadingData(false);
           setIsInitialized(true);
@@ -82,7 +74,6 @@ export function ScreeningPage() {
     loadExistingData();
   }, [id, user, showSuccessModal]);
 
-  // Salvar dados no localStorage sempre que formData mudar
   useEffect(() => {
     if (id && !showSuccessModal && isInitialized) {
       const storageKey = `screening-draft-${id}`;
@@ -111,13 +102,8 @@ export function ScreeningPage() {
     setErrors(newErrors);
 
     if (!isValid) {
-      const firstErrorElement = document.querySelector(
-        '.border-\\[\\#e53935\\]'
-      );
-      firstErrorElement?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
+      const firstErrorElement = document.querySelector('.border-\\[\\#e53935\\]');
+      firstErrorElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     return isValid;
@@ -138,11 +124,8 @@ export function ScreeningPage() {
 
     try {
       await submitScreeningForm(id, formData);
-
-      // Limpar o rascunho do localStorage após envio bem-sucedido
       const storageKey = `screening-draft-${id}`;
       localStorage.removeItem(storageKey);
-
       setShowSuccessModal(true);
     } catch (error) {
       console.error('Erro ao enviar triagem:', error);
@@ -190,13 +173,12 @@ export function ScreeningPage() {
             Race to No – Filtro de Alta Resistência
           </p>
           <p className="max-w-175 mx-auto text-[18px] text-[#0a0e27] leading-relaxed">
-            A triagem inicial não é uma conversa de "conhecimento mútuo"
-            amigável, mas sim um filtro de alta resistência projetado para
-            eliminar 80-90% dos candidatos em apenas 15 a 20 minutos. A
-            eficiência máxima é alcançada através da{' '}
-            <strong>mentalidade "Race to No"</strong>: seu objetivo é encontrar
-            um motivo para desqualificar o candidato o mais rápido possível,
-            protegendo seu tempo para os verdadeiros A-Players.
+            Esta triagem é um filtro de alta resistência projetado para eliminar 80–90% dos candidatos
+            em 15 a 20 minutos. O objetivo é identificar rapidamente o{' '}
+            <strong>"teatro de marketing"</strong> (candidatos que falam muito sobre estética e
+            campanhas, mas não dominam os números) e proteger o tempo para avaliar os verdadeiros
+            líderes focados em crescimento, sob a{' '}
+            <strong>mentalidade "Race to No"</strong>.
           </p>
         </header>
 
@@ -205,28 +187,29 @@ export function ScreeningPage() {
           {/* Section 1: Abertura */}
           <FormSection
             number="Pergunta 01"
-            title="Abertura: O Filtro de Expectativas"
+            title="Abertura: O Filtro de Expectativas e Visão de Negócios"
             subtitle="60-90 segundos"
           >
             <InfoBlock title="O que fazer:">
               <p>
-                Explique a missão da Ativos e o problema que a vaga resolve
-                (exemplo: "Construir nossa máquina de vendas do zero").
+                Explique o momento atual da empresa. Ex:{' '}
+                <em>
+                  "Estamos no estágio de tracionar vendas e precisamos transformar o marketing em um
+                  motor de receita, adotando uma cultura AI-First."
+                </em>
               </p>
             </InfoBlock>
 
             <InfoBlock title="O Motivo:">
               <p>
-                <strong>Alinhamento de Propósito.</strong> A-Players buscam
-                missões desafiadoras. Se a resposta for genérica ("preciso de um
-                emprego"), você já tem um sinal de alerta. O objetivo é ver se
-                ele se "apaixona" pelo problema técnico ou pela visão da
-                empresa.
+                <strong>Alinhamento de Propósito.</strong> A-Players buscam problemas complexos e
+                missões transformadoras. O objetivo é ver se o candidato pensa como um executivo de
+                negócios ou apenas como um <em>"guardião da marca"</em> tático.
               </p>
             </InfoBlock>
 
             <QuestionBlock
-              label="Por que você está aqui hoje?"
+              label="Dada a nossa missão atual, por que você está aqui hoje e qual é o problema central que você acha que um Diretor de Marketing deve resolver na nossa operação?"
               id="question1"
               value={formData.question1}
               onChange={value => handleFieldChange('question1', value)}
@@ -235,20 +218,23 @@ export function ScreeningPage() {
           </FormSection>
 
           {/* Section 2: O Placar */}
-          <FormSection number="Pergunta 02" title="O Placar (Resultados Reais)">
+          <FormSection
+            number="Pergunta 02"
+            title="O Placar (Resultados Financeiros e Métricas Reais)"
+          >
             <InfoBlock title="O Motivo:">
               <p>
-                <strong>Verificação de Impacto.</strong> A-Players têm uma
-                relação íntima com seus números (taxas de conversão, CAC,
-                pipeline). Se o candidato hesitar ou der respostas vagas, ele
-                provavelmente é um "falador" (B ou C-Player). A eficiência aqui
-                é identificar se ele entende que performance é o que importa,
-                não apenas atividades.
+                <strong>Verificação de Impacto e Fluência Financeira.</strong> A-Players no marketing
+                atual são <strong>coproprietários da receita</strong>. Se o candidato focar apenas em{' '}
+                <em>"Métricas de Vaidade"</em> (likes, impressões, prêmios) e não souber falar sobre{' '}
+                <strong>CAC</strong> (Custo de Aquisição de Cliente), <strong>LTV</strong> (Valor do
+                Tempo de Vida) e <strong>Pipeline Gerado</strong>, ele é um{' '}
+                <em>"Red Flag: All Brand, No Numbers"</em>.
               </p>
             </InfoBlock>
 
             <QuestionBlock
-              label="Nos seus últimos desafios, quais resultados você entregou? Tem como você me dar uma noção de números?"
+              label="Nos seus últimos desafios, quais foram as estratégias de Go-To-Market que você desenhou e quais resultados financeiros quantificáveis você entregou? Como você prova o ROI das suas campanhas para o CEO/CFO?"
               id="question2"
               value={formData.question2}
               onChange={value => handleFieldChange('question2', value)}
@@ -260,20 +246,20 @@ export function ScreeningPage() {
           {/* Section 3: O Playbook */}
           <FormSection
             number="Pergunta 03"
-            title="O Playbook (Operação Diária)"
+            title="O Playbook (Tecnologia, Inovação e Fim dos Silos)"
           >
             <InfoBlock title="O Motivo:">
               <p>
-                <strong>Consistência e Método.</strong> Resultados sem processo
-                são sorte. Este ponto avalia se o candidato tem disciplina
-                operacional e se trabalha com intenção ou apenas reage a
-                incêndios. Para a Ativos, que busca estruturar processos, alguém
-                que não sabe descrever seu próprio método não servirá.
+                <strong>Método, MarTech e AI-First.</strong> Resultados consistentes vêm de processos
+                estruturados e uso inteligente de tecnologia. O líder moderno de marketing precisa ser
+                um <strong>parceiro direto do CTO/CIO</strong> para unificar dados e não pode operar
+                em silos. Deve demonstrar agilidade e proficiência para liderar a adoção de{' '}
+                <strong>Inteligência Artificial</strong> e ganhar escala.
               </p>
             </InfoBlock>
 
             <QuestionBlock
-              label="Como é uma semana típica na sua função atual/passada?"
+              label='Como você estrutura a sua "stack" de marketing (tecnologias, dados e IA) no dia a dia? Como você garante o alinhamento interfuncional, especialmente a colaboração com Vendas e Tecnologia?'
               id="question3"
               value={formData.question3}
               onChange={value => handleFieldChange('question3', value)}
@@ -282,21 +268,24 @@ export function ScreeningPage() {
             />
           </FormSection>
 
-          {/* Section 4: Objetivos e Fit */}
+          {/* Section 4: Ownership e Resiliência */}
           <FormSection
             number="Pergunta 04"
-            title='Objetivos e "Fit" de Carreira'
+            title="Ownership e Resiliência (O Filtro do Fracasso)"
           >
             <InfoBlock title="O Motivo:">
               <p>
-                <strong>Previsibilidade de Retenção.</strong> Se o plano dele
-                não cabe na Ativos, a contratação será um desperdício de
-                recursos a médio prazo.
+                <strong>Autoconsciência e Accountability.</strong> Diretores de Marketing operam em
+                realidades imperfeitas. Se o candidato terceirizar a culpa de uma falha para o CEO,
+                para o produto ou para o mercado, é um forte sinal de alerta. A-Players mostram
+                vulnerabilidade, analisam a falha com base em dados e extraem aprendizados acionáveis.
+                Cuidado também com executivos de saídas rápidas (pulos de 12–18 meses), que abandonam
+                antes de verem o resultado real de suas estratégias.
               </p>
             </InfoBlock>
 
             <QuestionBlock
-              label="Quais seus objetivos para os próximos 5 anos e como esta vaga te ajuda?"
+              label="Conte-me sobre uma campanha ou estratégia de marketing que fracassou sob a sua liderança. Por que falhou e o que você mudou no seu processo após esse aprendizado?"
               id="question4"
               value={formData.question4}
               onChange={value => handleFieldChange('question4', value)}
@@ -306,18 +295,22 @@ export function ScreeningPage() {
           </FormSection>
 
           {/* Section 5: Logística */}
-          <FormSection number="Pergunta 05" title="Logística">
+          <FormSection
+            number="Pergunta 05"
+            title='Logística e "Fit" de Estágio de Crescimento'
+          >
             <InfoBlock title="O Motivo:">
               <p>
-                <strong>Eficiência Operacional Total.</strong> Nada é menos
-                eficiente do que gastar 4 horas em uma entrevista técnica
-                profunda para descobrir no final que o candidato custa o dobro
-                do seu orçamento. Acerte o "ingresso para o jogo" agora.
+                <strong>Eficiência Operacional Total.</strong> O perfil do líder de marketing precisa
+                casar com o momento da empresa — um <em>"Construtor"</em> para Série A, um{' '}
+                <em>"Escalador"</em> para Série B, ou um <em>"Operador Enterprise"</em> para Série
+                C/IPO. Além disso, não vale gastar tempo se a remuneração ou o modelo de trabalho não
+                estiverem alinhados.
               </p>
             </InfoBlock>
 
             <QuestionBlock
-              label="Você compreende que essa vaga exige dedicação exclusiva e que é totalmente presencial?"
+              label="Pensando no estágio de maturidade atual da nossa empresa, por que você é o líder certo para este momento específico? Você está alinhado(a) com a dedicação, o modelo de trabalho (presencial/híbrido) e a faixa orçamentária para a posição?"
               id="question5"
               value={formData.question5}
               onChange={value => handleFieldChange('question5', value)}
@@ -325,6 +318,27 @@ export function ScreeningPage() {
               error={errors.question5}
             />
           </FormSection>
+
+          {/* Observação para o Recrutador */}
+          <div className="mb-12 p-7 bg-linear-to-br from-[#0a0e27] to-[#1a237e] border-l-4 border-[#00e676] rounded-r">
+            <div className="font-['IBM_Plex_Mono',monospace] text-[13px] font-semibold tracking-[2px] text-[#00e676] mb-2 uppercase">
+              Observação para o Recrutador
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-4">
+              Sinal final: rigor analítico nos primeiros 5 minutos
+            </h3>
+            <div className="p-5 bg-white/5 border-l-[3px] border-[#00e676] rounded-r">
+              <p className="text-[#e0e0e0] text-[17px] leading-relaxed">
+                Preste atenção extra ao <strong className="text-white">rigor analítico</strong> do
+                candidato durante os primeiros 5 minutos. No nível de diretoria de marketing, a
+                capacidade de responder de forma direta e estruturada (
+                <strong className="text-white">método STAR</strong> — Situação, Tarefa, Ação,
+                Resultado) é o principal indicador de aprovação para a próxima fase técnica. Se as
+                respostas forem teóricas e não baseadas em métricas reais, acione o{' '}
+                <em>"Race to No"</em> e encerre.
+              </p>
+            </div>
+          </div>
 
           {/* Submit Button */}
           <div className="mt-12 pt-8 border-t-2 border-[#e0e7ef] text-center">
